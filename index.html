@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PowerEditing for WebGUI</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <script src="./src/codemirror-5.49.2/lib/codemirror.js"></script>
+  <script src="src/codemirror-5.49.2/mode/commonlisp/commonlisp.js"></script>
+  <link rel="stylesheet" href="/src/codemirror-5.49.2/lib/codemirror.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="nav-bar">
+    <div class="nav-bar-title">Untitled editing</div>
+    <div class="nav-bar-spacer">
+    </div>
+    <div id="runScript" class="material-icons round-button" style="color:rgba(48, 128, 55, 0.6);" title="Run (Ctrl+Enter)">play_arrow</div>
+  </div>
+  <div class="bodyContainer">
+    <textarea id="code_edit"></textarea>
+    <div class="splitLine"></div>
+    <div class="resize-handler" draggable="false"></div>
+    <div id="canvasContainer"></div>
+  </div>
+
+  <div id="welcome_dialog_background" class="click_remove_welcome_dialog"></div>
+  <div id="welcome_dialog">
+    <h2 class="welcome_title">Welcome to PowerEditing</h2>
+    <div class="welcome_content">
+      Welcome to use Power editing, a editor like Vim (Origin idea - Ronin).<br>
+      You find out get start on this site.
+    </div>
+    <div class="nav-bar-spacer"></div>
+    <button class="welcome_done click_remove_welcome_dialog">
+      Done
+    </button>
+  </div>
+  
+  <script src="./src/lisp-env.js"></script>
+  <script src="sketch.js"></script>
+</body>
+</html>

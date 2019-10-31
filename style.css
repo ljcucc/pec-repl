@@ -1,0 +1,234 @@
+:root{
+  --highlight-color: rgba(0,0,0,.15);
+  --background-color: white;
+  --primary-background-color: white;
+
+  --editor-background: white;
+  --editor-background-text-color: black;
+
+  --nav-bar-height: 50px;
+}
+
+body{
+  margin: 0;
+  /* background:var(--background-color); */
+  background: white
+}
+
+.bodyContainer{
+  display:flex;
+
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  height: calc(100vh - 50px);
+  width: 100vw;
+
+  margin-top: 50px;
+
+  overflow-y: hidden;
+
+  /* align-items: center; */
+}
+
+#code_edit{
+  width: 300px;
+  height: 100%;
+
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  /* padding:0;
+  margin:0; */
+
+  padding: 8px 12px;
+  outline: none;
+  font-size: 16px;
+
+  border:none;
+  background: var(--editor-background);
+  color: var(--editor-background-text-color);
+
+  /* transition: box-shadow 0.3s; */
+}
+
+.resize-handler{
+  width: 8px;
+  height: 100%;
+  
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  transition: background 0.3s;
+  z-index: 10;
+
+  /* border-left: 1px solid rgba(0,0,0,.35); */
+
+  cursor:col-resize;
+}
+#code_edit.hide{
+  padding:0;
+  margin:0;
+}
+
+.resize-handler:hover{
+  background:var(--highlight-color);
+}
+
+.nav-bar{
+  width: 100%;
+  height: var(--nav-bar-height);
+  background: var(--primary-background-color);
+  border-bottom: 1px solid rgba(0,0,0,.0);
+  z-index: 100;
+
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  transition: all 0.3s;
+
+  position:fixed;
+
+  color: black;
+
+  display:flex;
+  align-items: center;
+  padding-right: 8px;
+  padding-left: 16px;
+  top:0;
+  left:0;
+  right:0;
+}
+
+.nav-bar:hover{
+  /* box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12) */
+  border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+.nav-bar-spacer{
+  flex-grow: 1;
+}
+
+.round-button{
+  padding: 12px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.round-button:hover{
+  background:rgba(0,0,0,.25);
+}
+
+.CodeMirror-gutters{
+  border-right: 1px solid rgba(0,0,0,0);  
+  /* box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2); */
+  background-color: transparent;
+}
+
+.CodeMirror:hover, .CodeMirror:focus{
+  /* box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2) */
+}
+
+#canvasContainer{
+  margin-left: -8px;
+}
+
+.CodeMirror{
+  font-size: 15px;
+  transition: box-shadow 0.3;
+}
+
+.CodeMirror.auto-resize{
+  transition: all 0.1s;
+}
+
+.nav-bar-title{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:18px;
+}
+
+.splitLine{
+  height:70vh;
+  width: 1px;
+  background: rgba(0,0,0,.35);
+  margin-top:15vh;
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#welcome_dialog{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position:fixed;
+  width: 500px;
+  max-height: 300px;
+  padding: 24px;
+  background: white;
+  z-index: 1001;
+  border-radius: 10px;
+  box-shadow:0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12),0 8px 10px -5px rgba(0,0,0,.2);
+  margin:auto;
+  text-align: center;
+  display:flex;
+  flex-direction:column;
+  /* align-items: center; */
+}
+
+#welcome_dialog_background{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position:fixed;
+  z-index: 1000;
+  background: rgba(0,0,0,.35);
+}
+
+.welcome_title{
+  font-family: monospace;
+  font-weight: 100;
+  font-size: 24px;
+  margin:0;
+  margin-top: 36px;
+}
+
+.welcome_content{
+  font-family: monospace;
+  font-weight: 100;
+  font-size: 16px;
+  margin:0;
+  margin-top: 36px;
+  color:rgba(0,0,0,.6);
+}
+
+.welcome_done{
+  font-family: monospace;
+  font-weight: 100;
+  font-size: 16px;
+  margin:0;
+  margin-top: 36px;
+  color:rgb(21, 110, 212);
+  outline: none;
+  border:none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  background:transparent;
+  transition: background 0.3s;
+  /* width: 100px; */
+}
+
+.welcome_done:hover{
+  background: rgba(0,0,0,.15);
+
+}
