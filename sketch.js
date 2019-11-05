@@ -9,7 +9,8 @@
   var codeMrirrorEditor = CodeMirror.fromTextArea(document.querySelector("#code_edit"),{
     lineNumbers: true,
     width: 300,
-    textSize: 16
+    textSize: 16,
+    theme: "monokai"
   });
   codeMrirrorEditor.setSize(0, window.innerHeight);
   var codeEditor = $("#code_edit");
@@ -44,14 +45,18 @@
       y: e.offsetY,
       editorWidth: $(".CodeMirror").width()
     };
-    $("#canvasContainer").hide();
+    // $("canvas").width($("#canvasContainer").width()-10);
+    // $("#canvasContainer").hide();
   })  
 
   $(window).mousemove(e=>{
     if(codeEditorConfig.resizing){
       console.log((e.screenX - codeEditorConfig.x))
       // codeEditor.width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
-      $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
+      $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
+      // $("canvas").width(window.innerHeight - (codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x)) -10);
+      resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
+      rerenderingCanvas();
       console.log(codeEditor.width());
     }
   })
@@ -60,7 +65,7 @@
     if(codeEditorConfig.resizing){
       codeEditorConfig.resizing = false;
       $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
-      $("#canvasContainer").show();
+      // $("#canvasContainer").show();
       resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
     }
   });
@@ -75,12 +80,14 @@
       if(!codeEditorAppear){
         codeEditorConfig.editorWidth = $(".CodeMirror").width();
         $(".CodeMirror").width(0);
-        console.log("hiding");
+        // console.log("hiding");
       }else{
         if(codeEditorConfig.editorWidth <= 10) 
           codeEditorConfig.editorWidth = window.innerWidth/2;
         $(".CodeMirror").width(codeEditorConfig.editorWidth);
-        console.log("showing")
+        // $("canvas").width($("#canvasContainer").width());
+        // rerenderingCanvas();
+        // console.log("showing")
       }
       $("#canvasContainer").hide();
       setTimeout(()=>{
@@ -119,10 +126,10 @@
   }
 
   function rerenderingCanvas(){
-    sketch.background(255);
+    sketch.background(38, 50, 56);
     sketch.stroke(180); 
-    for(var w = 0; w < sketch.width; w+= 13){
-      for(var h = 0; h < sketch.height; h+= 13){
+    for(var w = 13; w < sketch.width; w+= 13){
+      for(var h = 13; h < sketch.height; h+= 13){
         sketch.point(w,h);
       }
     }

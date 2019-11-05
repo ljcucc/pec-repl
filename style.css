@@ -1,10 +1,12 @@
 :root{
-  --highlight-color: rgba(0,0,0,.15);
-  --background-color: white;
-  --primary-background-color: white;
+  --highlight-button-color: rgba(255,255,255,.25);
+  --highlight-lines-color: rgba(255,255,255,.45);
+  --background-color: #263238;
+  /* --primary-background-color: #37474f; */
+  --primary-background-color: #00796b;
 
-  --editor-background: white;
-  --editor-background-text-color: black;
+  --editor-background: black;
+  --background-text-color: white;
 
   --nav-bar-height: 50px;
 }
@@ -12,7 +14,7 @@
 body{
   margin: 0;
   /* background:var(--background-color); */
-  background: white
+  background: var(--background-color);
 }
 
 .bodyContainer{
@@ -48,8 +50,8 @@ body{
   font-size: 16px;
 
   border:none;
-  background: var(--editor-background);
-  color: var(--editor-background-text-color);
+  /* background: var(--editor-background); */
+  color: var(--background-text-color);
 
   /* transition: box-shadow 0.3s; */
 }
@@ -78,7 +80,7 @@ body{
 }
 
 .resize-handler:hover{
-  background:var(--highlight-color);
+  background:var(--highlight-button-color);
 }
 
 .nav-bar{
@@ -96,7 +98,7 @@ body{
 
   position:fixed;
 
-  color: black;
+  color: var(--background-text-color);
 
   display:flex;
   align-items: center;
@@ -109,7 +111,7 @@ body{
 
 .nav-bar:hover{
   /* box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12) */
-  border-bottom: 1px solid rgba(0,0,0,.15);
+  border-bottom: 1px solid var(--highlight-lines-color)
 }
 
 .nav-bar-spacer{
@@ -124,7 +126,7 @@ body{
 }
 
 .round-button:hover{
-  background:rgba(0,0,0,.25);
+  background:var(--highlight-button-color);
 }
 
 .CodeMirror-gutters{
@@ -137,6 +139,14 @@ body{
   /* box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2) */
 }
 
+.CodeMirror-selected {
+  background:var(--highlight-button-color) !important;
+}
+
+.CodeMirror-gutters{
+  background:transparent !important;
+}
+
 #canvasContainer{
   margin-left: -8px;
 }
@@ -144,10 +154,16 @@ body{
 .CodeMirror{
   font-size: 15px;
   transition: box-shadow 0.3;
+  background: var(--background-color) !important;
+  color: var(--background-text-color);
 }
 
 .CodeMirror.auto-resize{
   transition: all 0.1s;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+  border-left: 1px solid var(--background-text-color);
 }
 
 .nav-bar-title{
@@ -158,7 +174,7 @@ body{
 .splitLine{
   height:70vh;
   width: 1px;
-  background: rgba(0,0,0,.35);
+  background: var(--highlight-lines-color);
   margin-top:15vh;
   webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
