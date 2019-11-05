@@ -145,6 +145,7 @@ body{
 
 #canvasContainer{
   margin-left: -8px;
+  margin-top: var(--nav-bar-height);
   display:flex;
   top:0;
   bottom:0;
