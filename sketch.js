@@ -18,8 +18,10 @@
   var sketch = new p5(function(sketch){
     sketch.setup = function(){
       console.log("setup  v1.0");
-      sketch.resizeCanvas(window.innerWidth/2,window.innerHeight);
+      sketch.resizeCanvas(window.innerWidth,window.innerHeight);
       sketch.background(255);
+
+      rerenderingCanvas();
     }
 
     sketch.draw = function(){
@@ -102,7 +104,7 @@
       }
     }
 
-    console.log(e)
+    // console.log(e)
   }
 
   window.addEventListener("resize",e=>{

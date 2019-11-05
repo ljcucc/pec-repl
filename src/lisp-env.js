@@ -9,7 +9,7 @@
     for(var index = 0; index < stringInput.length; index++){
       var currentChar = stringInput[index];
 
-      console.log(valueStack)
+      // console.log(valueStack)
 
       if(currentChar.trim() == ""){
         pushVariableName();
@@ -52,7 +52,7 @@
         continue;
       }
 
-      console.log(lexerResult);
+      // console.log(lexerResult);
 
       let errorPosition = getPosition(index), errorMessage = "Syntax error at line "+errorPosition[0]+", "+errorPosition[1];
       throw (errorMessage);
@@ -61,7 +61,7 @@
     pushVariableName();
 
     function pushVariableName(){
-      console.log("checking and pushing unpush stack..."+ valueStack);
+      // console.log("checking and pushing unpush stack..."+ valueStack);
       if(!checkValueIsNull()){
         lexerResult.push(valueStack);
         resetValueStack();
@@ -121,15 +121,54 @@
     }
 
     resultJSON+="]"
-
+    
     console.log(resultJSON);
+    console.log(executeWithEnv(JSON.parse(resultJSON)));
   }
 
+  function executeWithEnv(parsedSourceCode, env){
+    var DeepScopeCount = 0;
+    var unscanScope = 0;
+    var scopes = [{
+      value:parsedSourceCode,
+      extends: ["root"]
+    }];
+
+    do{
+      DeepScopeCount = 0;
+      for(var scopeIndex = unscanScope; scopeIndex < scopes.length; scopeIndex ++){ //Rendering each scope
+        var scope = scopes[scopeIndex].value;
+        console.log(scope)
+        // if(!scope) continue;
+        for(var codeIndex = 0; codeIndex < scope.length; codeIndex++){
+          var codeItem = scope[codeIndex];
+          if(Array.isArray(codeItem)){
+            DeepScopeCount ++;
+            scopes.push({
+              value: codeItem,
+              extends: scopes[scopeIndex].extends.concat(scopeIndex)
+            });
+            scopes[scopeIndex].value[codeIndex] = scopes.length -1;
+            unscanScope++;
+          }
+        }
+      }
+    }while(DeepScopeCount > 0);
+    console.log(scopes)
+  }
+
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 
   
   // public
   window.lispEnv = {
     lexer,
-    parser
+    parser,
+    executeWithEnv
   };
 })();
