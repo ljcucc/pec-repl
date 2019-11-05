@@ -9,8 +9,6 @@
     for(var index = 0; index < stringInput.length; index++){
       var currentChar = stringInput[index];
 
-      // console.log(valueStack)
-
       if(currentChar.trim() == ""){
         pushVariableName();
         continue;
@@ -52,8 +50,6 @@
         continue;
       }
 
-      // console.log(lexerResult);
-
       let errorPosition = getPosition(index), errorMessage = "Syntax error at line "+errorPosition[0]+", "+errorPosition[1];
       throw (errorMessage);
     }
@@ -61,7 +57,6 @@
     pushVariableName();
 
     function pushVariableName(){
-      // console.log("checking and pushing unpush stack..."+ valueStack);
       if(!checkValueIsNull()){
         lexerResult.push(valueStack);
         resetValueStack();
@@ -126,7 +121,7 @@
     return parse2scopes(JSON.parse(resultJSON));
   }
 
-  function parse2scopes(parsedSourceCode, env){
+  function parse2scopes(parsedSourceCode){
     var DeepScopeCount = 0;
     var unscanScope = 0;
     var scopes = [{
@@ -147,7 +142,10 @@
               value: codeItem,
               extends: scopes[scopeIndex].extends.concat(scopeIndex)
             });
-            scopes[scopeIndex].value[codeIndex] = scopes.length -1;
+            scopes[scopeIndex].value[codeIndex] = {
+              type: "scope",
+              value:String(scopes.length -1)
+            };
             unscanScope++;
           }
         }
@@ -156,17 +154,43 @@
     console.log(scopes)
   }
 
-  function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+  function exec(code,requireEnv){
+    const parsedSourceCode = code;
+
+    if(!Array.isArray(parsedSourceCode)) return;
+    var scopeEnvs = [
+      requireEnv
+    ];
+
+    var scopeReturnValues = [null]
+
+    //initizating scope variables and scope returned value
+    for(var i  = 0; i < parsedSourceCode.length -1; i++){
+      scopeEnvs.push({});
+      scopeReturnValues.push(null);
+    }
+
+    var programIndex = 0;
+
+    while(true){
+      var currentScopeIndex = programIndex - parsedSourceCode.length -1;
+
+    }
+    
   }
+
+  // function uuidv4() {
+  //   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  //     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+  //     return v.toString(16);
+  //   });
+  // }
 
   
   // public
   window.lispEnv = {
     lexer,
-    parser
+    parser,
+    exec
   };
 })();
