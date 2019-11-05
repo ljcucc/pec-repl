@@ -123,23 +123,22 @@
     resultJSON+="]"
     
     console.log(resultJSON);
-    console.log(executeWithEnv(JSON.parse(resultJSON)));
+    return parse2scopes(JSON.parse(resultJSON));
   }
 
-  function executeWithEnv(parsedSourceCode, env){
+  function parse2scopes(parsedSourceCode, env){
     var DeepScopeCount = 0;
     var unscanScope = 0;
     var scopes = [{
       value:parsedSourceCode,
-      extends: ["root"]
+      extends: [-1]
     }];
 
     do{
       DeepScopeCount = 0;
       for(var scopeIndex = unscanScope; scopeIndex < scopes.length; scopeIndex ++){ //Rendering each scope
         var scope = scopes[scopeIndex].value;
-        console.log(scope)
-        // if(!scope) continue;
+        // console.log(scope)
         for(var codeIndex = 0; codeIndex < scope.length; codeIndex++){
           var codeItem = scope[codeIndex];
           if(Array.isArray(codeItem)){
@@ -168,7 +167,6 @@
   // public
   window.lispEnv = {
     lexer,
-    parser,
-    executeWithEnv
+    parser
   };
 })();

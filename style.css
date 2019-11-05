@@ -132,7 +132,7 @@ body{
 .CodeMirror-gutters{
   border-right: 1px solid rgba(0,0,0,0);  
   /* box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2); */
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .CodeMirror:hover, .CodeMirror:focus{
@@ -143,19 +143,27 @@ body{
   background:var(--highlight-button-color) !important;
 }
 
-.CodeMirror-gutters{
-  background:transparent !important;
-}
-
 #canvasContainer{
   margin-left: -8px;
+  display:flex;
+  top:0;
+  bottom:0;
+  left:0;
+  position:fixed;
+  z-index: 20;
 }
 
 .CodeMirror{
   font-size: 15px;
   transition: box-shadow 0.3;
   background: var(--background-color) !important;
-  color: var(--background-text-color);
+  color: var(--background-text-color) !important;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  margin-top: var(--nav-bar-height);
+  z-index: 10;
 }
 
 .CodeMirror.auto-resize{
