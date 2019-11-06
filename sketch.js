@@ -10,7 +10,9 @@
     lineNumbers: true,
     width: 300,
     textSize: 16,
-    theme: "monokai"
+    theme: "monokai",
+    smartIndent:false,
+    tabSize: 2
   });
   codeMrirrorEditor.setSize(0, window.innerHeight);
   var codeEditor = $("#code_edit");
@@ -94,14 +96,11 @@
         // rerenderingCanvas();
         // console.log("showing")
       }
-      $("#canvasContainer").hide();
-      setTimeout(()=>{
-        $("#canvasContainer").show();
-        if(!codeEditorAppear)
-          resizeCanvas(0)
-        else
-          resizeCanvas(codeEditorConfig.editorWidth)
-      },300);
+      // $("#canvasContainer").hide();
+      if(!codeEditorAppear)
+        resizeCanvas(0)
+      else
+        resizeCanvas(codeEditorConfig.editorWidth)
       
     }
 
