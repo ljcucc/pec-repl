@@ -37,6 +37,15 @@
     // let lasttime = performance.now();
     console.time("parser process");
     let result = lispEnv.parser(lispEnv.lexer(codeMrirrorEditor.getValue()));
+    let env = {
+      print:{
+        type:"function",
+        setup:()=>{
+
+        }
+      }
+    };
+    lispEnv.exec(result, env);
     console.timeEnd("parser process");
 
     // console.log("spend "+((performance.now() - lasttime)/1000)+"second.")
@@ -133,8 +142,9 @@
   function rerenderingCanvas(){
     sketch.background(38, 50, 56);
     sketch.stroke(180); 
-    for(var w = 13; w < sketch.width; w+= 13){
-      for(var h = 13; h < sketch.height; h+= 13){
+    const padding = 14;
+    for(let w = padding; w < sketch.width; w+= padding){
+      for(let h = padding; h < sketch.height; h+= padding){
         sketch.point(w,h);
       }
     }
