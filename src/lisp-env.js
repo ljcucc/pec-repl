@@ -121,39 +121,39 @@
     return parse2scopes(JSON.parse(resultJSON));
   }
 
-  function parse2scopes(parsedSourceCode){
-    var DeepScopeCount = 0;
-    var unscanScope = 0;
-    var scopes = [{
-      value:parsedSourceCode,
-      extends: [-1]
-    }];
+  // function parse2scopes(parsedSourceCode){
+  //   var DeepScopeCount = 0;
+  //   var unscanScope = 0;
+  //   var scopes = [{
+  //     value:parsedSourceCode,
+  //     extends: [-1]
+  //   }];
 
-    do{
-      DeepScopeCount = 0;
-      for(var scopeIndex = unscanScope; scopeIndex < scopes.length; scopeIndex ++){ //Rendering each scope
-        var scope = scopes[scopeIndex].value;
-        // console.log(scope)
-        for(var codeIndex = 0; codeIndex < scope.length; codeIndex++){
-          var codeItem = scope[codeIndex];
-          if(Array.isArray(codeItem)){
-            DeepScopeCount ++;
-            scopes.push({
-              value: codeItem,
-              extends: scopes[scopeIndex].extends.concat(scopeIndex)
-            });
-            scopes[scopeIndex].value[codeIndex] = {
-              type: "scope",
-              value:String(scopes.length -1)
-            };
-            unscanScope++;
-          }
-        }
-      }
-    }while(DeepScopeCount > 0);
-    console.log(scopes)
-    return scopes;
-  }
+  //   do{
+  //     DeepScopeCount = 0;
+  //     for(var scopeIndex = unscanScope; scopeIndex < scopes.length; scopeIndex ++){ //Rendering each scope
+  //       var scope = scopes[scopeIndex].value;
+  //       // console.log(scope)
+  //       for(var codeIndex = 0; codeIndex < scope.length; codeIndex++){
+  //         var codeItem = scope[codeIndex];
+  //         if(Array.isArray(codeItem)){
+  //           DeepScopeCount ++;
+  //           scopes.push({
+  //             value: codeItem,
+  //             extends: scopes[scopeIndex].extends.concat(scopeIndex)
+  //           });
+  //           scopes[scopeIndex].value[codeIndex] = {
+  //             type: "scope",
+  //             value:String(scopes.length -1)
+  //           };
+  //           unscanScope++;
+  //         }
+  //       }
+  //     }
+  //   }while(DeepScopeCount > 0);
+  //   console.log(scopes)
+  //   return scopes;
+  // }
 
   // function exec(code,requireEnv, config){
   //   config = config || {};
