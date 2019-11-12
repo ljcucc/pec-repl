@@ -155,235 +155,243 @@
     return scopes;
   }
 
-  function exec(code,requireEnv, config){
-    config = config || {};
-    var executeIndexList = ("pointerList" in config? config.pointetList : []);
-    var returnValueList = ("returnList" in config? config.returnList : []);
-    var sysValueList = ("sysList" in config? config.returnList : []);
-    var variablePool = ("variablePool" in config? config.variablePool : []);
+  // function exec(code,requireEnv, config){
+  //   config = config || {};
+  //   var stackPointers = ("pointerList" in config? config.pointerList : []);
+  //   var returnValueList = ("returnList" in config? config.returnList : []);
+  //   var sysValueList = ("sysList" in config? config.returnList : []);
+  //   var variablePool = ("variablePool" in config? config.variablePool : []); //varianle format: [scope][value_name]
 
-    importScopeVariables("$-1", requireEnv);
+  //   const exportFunctions = {
+  //     sys: sysValueList[scopeIndex],
+  //     env: {
+  //       resetExecuteIndex:()=>{
+  //         console.log("resetExecuteIndex("+scopeIndex+")");
+  //         resetExecuteIndex(scopeIndex);
+  //       },
+  //       getValues
+  //     }
+  //   }
 
-    var scopeIndex = 0;
+  //   initLists();
 
-    initLists();
+  //   importScopeVariables("$-1", requireEnv);
 
-    var loopCount = 0;
+  //   var scopeIndex = 0;
+  //   var loopCount = 0;
 
-    while(!isDone(scopeIndex)){
-      loopCount ++;
-      if(loopCount > 30){
-        throw "loop count > 1000"
-        break;
-      }
+  //   while(!isDone(scopeIndex)){
+  //     loopCount ++;
+  //     if(loopCount > 30){
+  //       throw "loop count > 1000"
+  //       break;
+  //     }
 
-      console.log({
-        scopeIndex,
-        code:code[scopeIndex],
-        executeIndexList
-      });
+  //     console.log({
+  //       scopeIndex,
+  //       code:code[scopeIndex],
+  //       stackPointers
+  //     });
 
-      const currentPointer = executeIndexList[scopeIndex].index;
+  //     const currentPointer = stackPointers[scopeIndex].index;
 
-      if(currentPointer == 0 && isVariable(code[scopeIndex].value[0])){ //if is vairbale head and while reading the head
-        var headVariable = getVariable(code[scopeIndex].value[0],scopeIndex,code[scopeIndex].extends); //get head variable name
-        if(headVariable[0] == "undefined") throw "value not found!"
-        var targetVariable =  variablePool[headVariable[0]][headVariable[1]]; //get variable datas
+  //     if(currentPointer == 0 && isVarCode(code[scopeIndex].value[0])){ //if is vairbale head and while reading the head
+  //       var functionName = getVarInfo(code[scopeIndex].value[0],scopeIndex,code[scopeIndex].extends); //get head variable name
+  //       if(functionName.scope == "undefined") throw "variable not found.";
+  //       var functionVariable =  variablePool[functionName[0]][functionName[1]]; //get variable datas
 
-        console.log("check first item!!");
-        console.log({
-          headVariable,
-          targetVariable
-        })
+  //       if(functionVariable.type == "function"){ //if head is a function
+  //         sysValueList[scopeIndex] = functionVariable.setup(code[scopeIndex],exportFunctions); // run init
+  //         stackPointers[scopeIndex].call = headVariable;
+  //         stackPointerMove(scopeIndex,1); //move forward
+  //         continue;
+  //       }
+  //     }
 
-        if(targetVariable.type == "function"){ //if head is a function
-          sysValueList[scopeIndex] = targetVariable.setup(code[scopeIndex],{
-            sys:sysValueList[scopeIndex],
-            env:{ //give the control of executeIndex.
+  //     if(isDeeperScopeInside(scopeIndex,currentPointer)){ // if here have an deeper scope, then deep-in!
+  //       stackPointerMove(scopeIndex,1); //move forward
+  //       var scopeLink = code[scopeIndex].value[currentPointer] //move deeper
+  //       scopeIndex = scopeLink.value;
+  //       scopeIndex = Number(scopeIndex);
+  //       console.log("after scopeIndex"+scopeIndex);
+  //       continue;
+  //     }
 
-            }
-          }); // run init
-          executeIndexList[scopeIndex].call = headVariable;
-          executeIndexMoveOn(scopeIndex,1); //move forward
-          continue;
-        } 
-      }
+  //     if(currentPointer >= code[scopeIndex].value.length -1){ //if we scanned all of the value,meaning there's no deeper scope we can go ,then start to execute back.
+  //       const firstItem = code[scopeIndex].value[0];
 
-      if(isDeeperScopeInside(scopeIndex,currentPointer)){
-        executeIndexMoveOn(scopeIndex,1); //move forward
-        var scopeLink = code[scopeIndex].value[currentPointer]
-        scopeIndex = scopeLink.value;
-        scopeIndex = Number(scopeIndex);
-        console.log("after scopeIndex"+scopeIndex);
-        continue;
-      }
+  //       if(!isVarCode(firstItem)){ //if current scope of code isn't variable start, meaning this is an normal list, then go back.
+  //         returnValueList[scopeIndex] = getValues(code[scopeIndex]); //push list value into return list
+  //         scopeIndex = getFatherScope(scopeIndex); //back to upper scope
+  //         console.log(scopeIndex);
+  //         continue;
+  //       }
 
-      if(currentPointer >= code[scopeIndex].value.length -1){ //if we scanned all of the value, then run it.
-        const firstItem = code[scopeIndex].value[0];
-
-        if(!isVariable(firstItem)){
-          returnValueList[scopeIndex] = getValues(code[scopeIndex]);
-          scopeIndex = getFatherScope(scopeIndex);
-          console.log(scopeIndex);
-          continue;
-        }
-
-
-
-        var headVariable = getVariable(firstItem,scopeIndex,code[scopeIndex].extends); //get head variable name
-        console.log([firstItem,scopeIndex,code[scopeIndex].extends])
-        console.log(headVariable);
+  //       var func_var = getVarInfo(firstItem,scopeIndex,code[scopeIndex].extends); //get head variable name
+  //       // console.log([firstItem,scopeIndex,code[scopeIndex].extends])
+  //       // console.log(headVariable);
         
-        if(headVariable[0] == "undefined") throw "value not found!"
-        var targetVariable =  variablePool[headVariable[0]][headVariable[1]]; //get variable datas
-        sysValueList[scopeIndex] = targetVariable.run(code[scopeIndex], { //run it
-          sys: sysValueList[scopeIndex],
-          env: {
-            resetExecuteIndex:()=>{
-              console.log("resetExecuteIndex("+scopeIndex+")");
-              resetExecuteIndex(scopeIndex);
-            },
-            getValues
-          }
-        });
+  //       if(func_var.scope == "undefined") throw "value not found!"
+  //       var func_var =  variablePool[func_info.scope][func_info.name]; //get variable datas
+  //       sysValueList[scopeIndex] = targetVariable.run(code[scopeIndex], exportFunctions); //run it
 
-        var returnned = sysValueList[scopeIndex].feedback;
-        returnValueList[scopeIndex] = returnned;
+  //       var returnned = sysValueList[scopeIndex].feedback;
+  //       returnValueList[scopeIndex] = returnned;
 
-        scopeIndex = getFatherScope(scopeIndex);
-        console.log(scopeIndex);
-        console.log("function runned")
+  //       scopeIndex = getFatherScope(scopeIndex);
+  //       console.log(scopeIndex);
+  //       console.log("function runned")
 
-        continue;
-      }
+  //       continue;
+  //     }
 
-      console.log("counting ending");
-      executeIndexList[scopeIndex].index ++;
-
-      // if(isDeeperScopeInside(scopeIndex)){
-      //   var pointerObj = {
-      //     index: 0
-      //   };
-
-      //   scopeIndex++;
-      //   continue;
-      // }
-    }
+  //     console.log("counting ending");
+  //     stackPointers[scopeIndex].index ++;
+  //   }
 
 
-    console.log(variablePool);
-    console.log(getValues(code[0].value));
+  //   console.log(variablePool);
+  //   console.log(getValues(code[0].value));
 
-    function initLists(){
-      var initExecuteIndexList = (executeIndexList.length == 0);
-      var initSysValueList = (sysValueList.length == 0);
-      var initReturnValueList = (returnValueList.length == 0);
+  //   function initLists(){
+  //     var initstackPointers = (stackPointers.length == 0);
+  //     var initSysValueList = (sysValueList.length == 0);
+  //     var initReturnValueList = (returnValueList.length == 0);
 
-      for(var index in code){
-        if(initExecuteIndexList)
-          executeIndexList.push({call:[],index:0});
-        if(initSysValueList)
-          sysValueList.push({});
-        if(initReturnValueList)
-          returnValueList.push(null);
-      }
-    }
+  //     for(var index in code){
+  //       if(initstackPointers)
+  //         stackPointers.push({call:[],index:0});
+  //       if(initSysValueList)
+  //         sysValueList.push({});
+  //       if(initReturnValueList)
+  //         returnValueList.push(null);
+  //     }
+  //   }
 
-    function getVariable(variableName, scopeId, scopeExtends){
-      // retrurns [scopeID weher's variable exist, variable name]
-      if("$"+String(scopeId) in variablePool && variableName in variablePool[scopeId]){
-        return ["$"+String(scopeId), variableName];
-      }
-      for(var index =0; index < scopeExtends.length; index++){
-        var variableScopeId = "$"+String(scopeExtends[(scopeExtends.length - 1 ) - index]);
-        if(variableScopeId in variablePool && variableName in variablePool[variableScopeId]){
-          return [variableScopeId, variableName]
-        }
-      }
-      return ["undefined", null];
-    }
+  //   function getVarInfo(var_name, scopeId, extendsScope){
+  //     // retrurns [scopeID weher's variable exist, variable name]
+  //     if("$"+String(scopeId) in variablePool && var_name in variablePool[scopeId]){
+  //       return ["$"+String(scopeId), var_name];
+  //     }
+  //     for(var i =0; i < extendsScope.length; i++){
+  //       var scope = "$"+String(extendsScope[(extendsScope.length - 1 ) - i]);
+  //       if(scope in variablePool && varNavar_nameme in variablePool[scope]){
+  //         return {
+  //           scope,
+  //           name:variablePool[scope][var_name]
+  //         };
+  //       }
+  //     }
+  //     return {
+  //       scope: "undefined",
+  //       name: null
+  //     }
+  //   }
 
-    function executeIndexMoveOn(scopeId,step){
-      console.log(scopeId);
-      executeIndexList[scopeId].index += step;
-    }
+  //   function isVarCode(name){
+  //     if(typeof name != "string") return false;
+  //     return name.indexOf("$") == 0;
+  //   }
 
-    function importScopeVariables(scopeName, vars){
-      var originVars = variablePool[String(scopeName)] || [];
-      variablePool[scopeName] = Object.assign({},originVars, vars); //merge variables
-    }
+  //   function stackPointerMove(scopeId,step){
+  //     console.log(scopeId);
+  //     stackPointers[scopeId].index += step;
+  //   }
 
-    function isDeeperScopeInside(scopeId,index){
-      if(index != undefined){
-        var currentItem = code[scopeId].value[index];
-        console.log({
-          currentItem
-        })
-        return typeof currentItem == "object" && "type" in currentItem && currentItem.type == "scope";
-      }
-      for(var index = 0; index < code[scopeId]; index++){
-        var currentItem = code[scopeId].value[index];
-        if(typeof currentItem == "object" && "type" in currentItem && currentItem.type == "scope"){
-          return true;
-        }
-        return false;
-      }
-    }
+  //   function importScopeVariables(scopeName, vars){
+  //     var originVars = variablePool[String(scopeName)] || [];
+  //     variablePool[scopeName] = Object.assign({},originVars, vars); //merge variables
+  //   }
 
-    function getFatherScope(scopeId){
-      return code[scopeId].extends[code[scopeId].extends.length-1];
-    }
+  //   function isDeeperScopeInside(scopeId,index){
+  //     if(index != undefined){
+  //       var currentItem = code[scopeId].value[index];
+  //       console.log({
+  //         currentItem
+  //       })
+  //       return typeof currentItem == "object" && "type" in currentItem && currentItem.type == "scope";
+  //     }
+  //     for(var index = 0; index < code[scopeId]; index++){
+  //       var currentItem = code[scopeId].value[index];
+  //       if(typeof currentItem == "object" && "type" in currentItem && currentItem.type == "scope"){
+  //         return true;
+  //       }
+  //       return false;
+  //     }
+  //   }
 
-    function resetExecuteIndex(scopeId){
-      //resetExecuteIndex(...) meaning rerun this line
-      executeIndexList[scopeId] = 0;
-    }
+  //   function getFatherScope(scopeId){
+  //     return code[scopeId].extends[code[scopeId].extends.length-1];
+  //   }
 
-    function getValues(codeList){
-      var result = [];
-      for(var index in codeList){
-        var currentObj = codeList[index];
-        if(isVariable(currentObj)){
-          result.push({
-            type: "variable",
-            value: currentObj
-          });
-        }else if(isNaN(currentObj) && typeof currentObj == "string"){
-          result.push({
-            type: "string",
-            value: currentObj
-          });
-        }else if(typeof currentObj == "object" && "type" in currentObj && currentObj.type == "scope"){
-          result.push({
-            type: "any",
-            value: returnValueList[currentObj.value]
-          });
-        }else{
-          result.push({
-            type: "number",
-            value: currentObj
-          })
-        }
-      }
-      return result;
-    }
+  //   function resetExecuteIndex(scopeId){
+  //     //resetExecuteIndex(...) meaning rerun this line
+  //     stackPointers[scopeId] = 0;
+  //   }
 
-    function isVariable(name){
-      if(typeof name != "string") return false;
-      return name.indexOf("$") == 0;
-    }
+  //   function getCodeTemplate(codeList){ //getValues
+  //     var result = [];
+  //     for(var index in codeList){
+  //       var currentObj = codeList[index];
+  //       if(isVarCode(currentObj)){
+  //         result.push({
+  //           type: "variable",
+  //           value: currentObj
+  //         });
+  //         console.log("getCodeTemplateList");
+  //       }else if(isNaN(currentObj) && typeof currentObj == "string"){
+  //         result.push({
+  //           type: "string",
+  //           value: currentObj
+  //         });
+  //       }else if(typeof currentObj == "object" && "type" in currentObj && currentObj.type == "scope"){
+  //         result.push({
+  //           type: "any",
+  //           value: returnValueList[currentObj.value]
+  //         });
+  //       }else{
+  //         result.push({
+  //           type: "number",
+  //           value: currentObj
+  //         })
+  //       }
+  //     }
+  //     return result;
+  //   }
 
-    function isDone(scopeId){
-      // scopeId = Number(scopeId);
-      return scopeId == -1 || executeIndexList[scopeId] >= code[scopeId].value.length;
-    }
-  }
+  //   function getValues(codeList){ //getValues
+  //     var result = [];
+  //     for(var index in codeList){
+  //       var currentObj = codeList[index];
+  //       if(isVarCode(currentObj)){
+  //         result.push({
+  //           type: "variable",
+  //           value: currentObj
+  //         });
+  //       }else if(isNaN(currentObj) && typeof currentObj == "string"){
+  //         result.push({
+  //           type: "string",
+  //           value: currentObj
+  //         });
+  //       }else if(typeof currentObj == "object" && "type" in currentObj && currentObj.type == "scope"){
+  //         result.push({
+  //           type: "any",
+  //           value: returnValueList[currentObj.value]
+  //         });
+  //       }else{
+  //         result.push({
+  //           type: "number",
+  //           value: currentObj
+  //         })
+  //       }
+  //     }
+  //     return result;
+  //   }
 
-  // function uuidv4() {
-  //   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-  //     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-  //     return v.toString(16);
-  //   });
+  //   function isDone(scopeId){
+  //     // scopeId = Number(scopeId);
+  //     return scopeId == -1 || stackPointers[scopeId] >= code[scopeId].value.length;
+  //   }
   // }
 
   
@@ -391,6 +399,6 @@
   window.lispEnv = {
     lexer,
     parser,
-    exec
+    // exec
   };
 })();
