@@ -171,10 +171,6 @@ body{
   z-index: 10;
 }
 
-.CodeMirror.auto-resize{
-  /* transition: all 0.1s; */
-}
-
 .CodeMirror div.CodeMirror-cursor {
   border-left: 1px solid var(--background-text-color);
 }
