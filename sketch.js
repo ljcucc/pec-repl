@@ -1,12 +1,12 @@
 (function(){
-  var codeEditorConfig = {
+  var codesProps = {
     resizing: false,
     appear:false,
     x: 0,
     y: 0,
-    editorWidth: 0
+    width: 0
   }
-  var codeMrirrorEditor = CodeMirror.fromTextArea(document.querySelector("#code_edit"),{
+  var codeMirror = CodeMirror.fromTextArea(document.querySelector("#code_edit"),{
     lineNumbers: true,
     width: 300,
     textSize: 16,
@@ -15,7 +15,7 @@
     tabSize: 2
   });
   
-  codeMrirrorEditor.setSize(0, window.innerHeight);
+  codeMirror.setSize(0, window.innerHeight);
   var fullScreenToggle = false;
 
   var sketch = new p5(function(sketch){
@@ -33,13 +33,8 @@
   },document.querySelector("#canvasContainer"));
 
   $("#runScript").click(function(){
-    console.log(codeMrirrorEditor.getValue())
-    // let lasttime = performance.now();
+    console.log(codeMirror.getValue())
     console.time("parser process");
-    // let result = lispEnv.parser(lispEnv.lexer(codeMrirrorEditor.getValue()));
-    // let env = functions;
-    // console.log(result);
-    // // lispEnv.exec(result, env);
     let lisp = new LispRuntime({
       debug:(e)=>{
         console.log("DEBUG: "+e);
@@ -55,7 +50,7 @@
         return e.join("");
       }
     });
-    let parsedCode = lisp.parse(codeMrirrorEditor.getValue());
+    let parsedCode = lisp.parse(codeMirror.getValue());
     lisp.forceRun(parsedCode);
     console.timeEnd("parser process");
 
@@ -63,31 +58,27 @@
   
   var resizeHandle = $(".resize-handler");
   resizeHandle.mousedown(e=>{
-    // console.log(e);
-    $(".CodeMirror").removeClass("auto-resize");
-    codeEditorConfig = {
+    codesProps = {
       resizing: true,
       x: e.screenX,
       y: e.offsetY,
-      editorWidth: $(".CodeMirror").width()
+      width: $(".CodeMirror").width()
     };
-    // $("canvas").width($("#canvasContainer").width()-10);
-    // $("#canvasContainer").hide();
   })  
 
   $(window).mousemove(e=>{
-    if(codeEditorConfig.resizing){
-      $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
-      resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
+    if(codesProps.resizing){
+      $(".CodeMirror").width(codesProps.width + (e.screenX - codesProps.x));
+      resizeCanvas(codesProps.width + (e.screenX - codesProps.x));
       rerenderingCanvas();
     }
   })
 
   $(window).mouseup(e=>{
-    if(codeEditorConfig.resizing){
-      codeEditorConfig.resizing = false;
-      $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
-      resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
+    if(codesProps.resizing){
+      codesProps.resizing = false;
+      $(".CodeMirror").width(codesProps.width + (e.screenX - codesProps.x))
+      resizeCanvas(codesProps.width + (e.screenX - codesProps.x));
     }
   });
 
@@ -99,17 +90,17 @@
       console.log("toggleEditorAppear");
       $(".CodeMirror").addClass("auto-resize");
       if(!codeEditorAppear){
-        codeEditorConfig.editorWidth = $(".CodeMirror").width();
+        codesProps.width = $(".CodeMirror").width();
         $(".CodeMirror").width(0);
       }else{
-        if(codeEditorConfig.editorWidth <= 10) 
-          codeEditorConfig.editorWidth = window.innerWidth/2;
-        $(".CodeMirror").width(codeEditorConfig.editorWidth);
+        if(codesProps.width <= 10) 
+          codesProps.width = window.innerWidth/2;
+        $(".CodeMirror").width(codesProps.width);
       }
       if(!codeEditorAppear)
         resizeCanvas(0)
       else
-        resizeCanvas(codeEditorConfig.editorWidth)
+        resizeCanvas(codesProps.width)
       
     }
 
@@ -127,17 +118,17 @@
 
   window.addEventListener("resize",e=>{
     resizeCanvas($(".CodeMirror").width());
-  })
+  });
 
-  function resizeCanvas(editorWidth){
-    if(editorWidth > 10){
+  function resizeCanvas(width){
+    if(width > 10){
       $("#runScript").removeClass("hide");
     }else{
       $("#runScript").addClass("hide");
     }
 
-    sketch.resizeCanvas(window.innerWidth - editorWidth,window.innerHeight)
-    $("#canvasContainer").css("marginLeft",editorWidth)
+    sketch.resizeCanvas(window.innerWidth - width,window.innerHeight)
+    $("#canvasContainer").css("marginLeft",width)
     rerenderingCanvas();
   }
 
@@ -151,9 +142,4 @@
       }
     }
   }
-
-  $(".click_remove_welcome_dialog").click(e=>{
-    $("#welcome_dialog").fadeOut(200);
-    $("#welcome_dialog_background").fadeOut(200);
-  })
 })();
