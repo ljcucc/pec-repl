@@ -19,11 +19,13 @@ function LispRuntime(lib={}){
   }
 
   function parenthesize(tokenized){
-    return JSON.parse("["+tokenized.map((x,i)=>{
+    let code = "["+tokenized.map((x,i)=>{
       if(x == "(") return '[""';
       else if(x == ")") return '""]'
       else return x[0] == '"'? x: !isNaN(x)? x: '"$'+x+'"';
-    }).join(",").replace(/!str_pstart!/g,"(").replace(/!str_pend!/g,")")+"]");
+    }).join(",").replace(/!str_pstart!/g,"(").replace(/!str_pend!/g,")")+"]";
+    console.log(code);
+    return JSON.parse(code);
   }
 
   const asyncFuncs = {
@@ -58,10 +60,13 @@ function LispRuntime(lib={}){
       var func_name = code.shift();
       asyncFuncs[func_name.slice(1)](code,context);
     }else{
-      var result = code.map((e, i)=>{return interpret(e, context)});
-      // console.log(result)
-      if(result[0] instanceof Function)
-        return result.shift().apply(undefined, result);
+      var result = code.map((e, i)=> interpret(e, context));
+      console.log(result);
+      if(result[0] instanceof Function){
+        let func = result.shift();
+        return func.apply(undefined, result);
+      }
+      return result;
     }
   }
 
