@@ -14,8 +14,8 @@
     smartIndent:false,
     tabSize: 2
   });
+  
   codeMrirrorEditor.setSize(0, window.innerHeight);
-  var codeEditor = $("#code_edit");
   var fullScreenToggle = false;
 
   var sketch = new p5(function(sketch){
@@ -42,7 +42,7 @@
     // // lispEnv.exec(result, env);
     let lisp = new LispRuntime({
       debug:(e)=>{
-        console.log(e);
+        console.log("DEBUG: "+e);
       },
       msgbox:(e)=>{
         alert(e);
@@ -51,14 +51,14 @@
         return prompt("input:");
       },
       join:(e)=>{
-        
+        console.log(e);
+        return e.join("");
       }
     });
     let parsedCode = lisp.parse(codeMrirrorEditor.getValue());
     lisp.forceRun(parsedCode);
     console.timeEnd("parser process");
 
-    // console.log("spend "+((performance.now() - lasttime)/1000)+"second.")
   });
   
   var resizeHandle = $(".resize-handler");
@@ -77,13 +77,9 @@
 
   $(window).mousemove(e=>{
     if(codeEditorConfig.resizing){
-      // console.log((e.screenX - codeEditorConfig.x))
-      // codeEditor.width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
       $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
-      // $("canvas").width(window.innerHeight - (codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x)) -10);
       resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
       rerenderingCanvas();
-      // console.log(codeEditor.width());
     }
   })
 
@@ -91,7 +87,6 @@
     if(codeEditorConfig.resizing){
       codeEditorConfig.resizing = false;
       $(".CodeMirror").width(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x))
-      // $("#canvasContainer").show();
       resizeCanvas(codeEditorConfig.editorWidth + (e.screenX - codeEditorConfig.x));
     }
   });
@@ -106,16 +101,11 @@
       if(!codeEditorAppear){
         codeEditorConfig.editorWidth = $(".CodeMirror").width();
         $(".CodeMirror").width(0);
-        // console.log("hiding");
       }else{
         if(codeEditorConfig.editorWidth <= 10) 
           codeEditorConfig.editorWidth = window.innerWidth/2;
         $(".CodeMirror").width(codeEditorConfig.editorWidth);
-        // $("canvas").width($("#canvasContainer").width());
-        // rerenderingCanvas();
-        // console.log("showing")
       }
-      // $("#canvasContainer").hide();
       if(!codeEditorAppear)
         resizeCanvas(0)
       else
@@ -133,8 +123,6 @@
         $(".nav-bar").slideUp();
       }
     }
-
-    // console.log(e)
   }
 
   window.addEventListener("resize",e=>{
@@ -142,8 +130,12 @@
   })
 
   function resizeCanvas(editorWidth){
-    // console.log("resizing")
-    // console.log(editorWidth)
+    if(editorWidth > 10){
+      $("#runScript").removeClass("hide");
+    }else{
+      $("#runScript").addClass("hide");
+    }
+
     sketch.resizeCanvas(window.innerWidth - editorWidth,window.innerHeight)
     $("#canvasContainer").css("marginLeft",editorWidth)
     rerenderingCanvas();

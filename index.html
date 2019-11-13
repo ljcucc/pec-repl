@@ -26,7 +26,8 @@
     <div class="nav-bar-title">Power Editing</div>
     <div class="nav-bar-spacer">
     </div>
-    <div id="runScript" class="material-icons round-button" style="color:var(--background-text-color)" title="Run (Ctrl+Enter)">play_arrow</div>
+    <!-- <div class="material-icons round-button" style="color:var(--background-text-color)" title="Toggle Codes">web</div> -->
+    <div class="material-icons round-button" style="color:var(--background-text-color)" title="options">keyboard_arrow_left</div>
   </div>
   <div class="bodyContainer">
     <textarea id="code_edit"></textarea>
@@ -37,18 +38,9 @@
     </div>
   </div>
 
-  <!-- <div id="welcome_dialog_background" class="click_remove_welcome_dialog"></div>
-  <div id="welcome_dialog">
-    <h2 class="welcome_title">Welcome to PowerEditing</h2>
-    <div class="welcome_content">
-      Welcome to use Power editing, a editor like Vim (Origin idea - Ronin).<br>
-      You find out get start on this site.
-    </div>
-    <div class="nav-bar-spacer"></div>
-    <button class="welcome_done click_remove_welcome_dialog">
-      Done
-    </button>
-  </div> -->
+  <button class="float-btn hide" title="Run (Ctrl+Enter)" id="runScript">
+    <div class="material-icons">play_arrow</div>
+  </button>
   
   <script src="src/functions.js"></script>
   <script src="./src/lisp-env.js"></script>
