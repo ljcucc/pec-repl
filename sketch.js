@@ -49,6 +49,9 @@
       },
       input:(e)=>{
         return prompt("input:");
+      },
+      join:(e)=>{
+        
       }
     });
     let parsedCode = lisp.parse(codeMrirrorEditor.getValue());

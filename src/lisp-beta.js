@@ -28,7 +28,10 @@ function LispRuntime(lib={}){
 
   const asyncFuncs = {
     let: (code, context)=>{
-      context.set(code[0].slice(1), code[1]);
+      let result = interpret(code[1], context);
+      console.log(code[1]);
+      console.log(result);
+      context.set(code[0][0] == "$"? code[0].slice(1): code[0], result);
     },
     if: (code, context)=>{
       return interpret(code[0],context) ? 
@@ -56,26 +59,26 @@ function LispRuntime(lib={}){
       asyncFuncs[func_name.slice(1)](code,context);
     }else{
       var result = code.map((e, i)=>{return interpret(e, context)});
-      console.log(result)
+      // console.log(result)
       if(result[0] instanceof Function)
-        result.shift().apply(undefined, result);
+        return result.shift().apply(undefined, result);
     }
   }
 
   function interpret(code, context){
-    if(code[0] == "" && code.length >= 3){
+    if(code instanceof Array && code.length >= 3 && code[0] == ""){
       code.shift();
       code.pop();
     }
 
     console.log(code);
 
-    if(code.length > 1 && code instanceof Array)
+    if(code instanceof Array && code.length > 0)
       return interpretList(code, context);
-    else if(code instanceof Function)
-      context.get(code.slice(1)).apply(undefined, undefined);
     else if(code[0] == "$"){
-      return context.get(code.slice(1)); //remove first char
+      console.log("Fetching variable...")
+      let result = context.get(code.slice(1));
+      return result; //remove first char
     }
     return isNaN(code)? code: Number(code);    
   }
