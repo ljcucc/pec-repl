@@ -36,10 +36,23 @@
     console.log(codeMrirrorEditor.getValue())
     // let lasttime = performance.now();
     console.time("parser process");
-    let result = lispEnv.parser(lispEnv.lexer(codeMrirrorEditor.getValue()));
-    let env = functions;
-    console.log(result);
-    // lispEnv.exec(result, env);
+    // let result = lispEnv.parser(lispEnv.lexer(codeMrirrorEditor.getValue()));
+    // let env = functions;
+    // console.log(result);
+    // // lispEnv.exec(result, env);
+    let lisp = new LispRuntime({
+      debug:(e)=>{
+        console.log(e);
+      },
+      msgbox:(e)=>{
+        alert(e);
+      },
+      input:(e)=>{
+        return prompt("input:");
+      }
+    });
+    let parsedCode = lisp.parse(codeMrirrorEditor.getValue());
+    lisp.forceRun(parsedCode);
     console.timeEnd("parser process");
 
     // console.log("spend "+((performance.now() - lasttime)/1000)+"second.")
