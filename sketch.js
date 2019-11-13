@@ -15,7 +15,7 @@
     tabSize: 2
   });
   
-  codeMirror.setSize(0, window.innerHeight);
+  codeMirror.setSize(0, window.innerHeight - 60 - 100);
   var fullScreenToggle = false;
 
   var sketch = new p5(function(sketch){
@@ -28,7 +28,6 @@
     }
 
     sketch.draw = function(){
-      // sketch.background(200)
     }
   },document.querySelector("#canvasContainer"));
 
@@ -46,7 +45,6 @@
         return prompt("input:");
       },
       join:(e)=>{
-        console.log(e);
         return e.join("");
       }
     });
@@ -72,7 +70,7 @@
       resizeCanvas(codesProps.width + (e.screenX - codesProps.x));
       rerenderingCanvas();
     }
-  })
+  });
 
   $(window).mouseup(e=>{
     if(codesProps.resizing){
@@ -86,18 +84,18 @@
     if(e.ctrlKey && e.keyCode == 'E'.charCodeAt(0)){
       e.preventDefault();
 
-      var codeEditorAppear = $(".CodeMirror").width() < 10;
-      console.log("toggleEditorAppear");
-      $(".CodeMirror").addClass("auto-resize");
-      if(!codeEditorAppear){
+      var appear = $(".CodeMirror").width() < 10;
+      
+      if(!appear){
         codesProps.width = $(".CodeMirror").width();
         $(".CodeMirror").width(0);
       }else{
-        if(codesProps.width <= 10) 
-          codesProps.width = window.innerWidth/2;
+        codesProps.width = codesProps.width <= 10? 
+          window.innerWidth/2 : codesProps.width;
+        
         $(".CodeMirror").width(codesProps.width);
       }
-      if(!codeEditorAppear)
+      if(!appear)
         resizeCanvas(0)
       else
         resizeCanvas(codesProps.width)

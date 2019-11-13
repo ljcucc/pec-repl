@@ -165,7 +165,7 @@ body{
   color: var(--background-text-color) !important;
   position:fixed;
   top:0;
-  bottom:0;
+  bottom:60;
   left:0;
   margin-top: var(--nav-bar-height);
   z-index: 10;
@@ -173,6 +173,10 @@ body{
 
 .CodeMirror div.CodeMirror-cursor {
   border-left: 1px solid var(--background-text-color);
+}
+
+.CodeMirror-scroll{
+  overflow-x: scroll;
 }
 
 .nav-bar-title{
