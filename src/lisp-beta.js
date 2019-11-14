@@ -33,7 +33,7 @@ function LispRuntime(lib={}){
       let result = interpret(code[1], context);
       console.log(code[1]);
       console.log(result);
-      context.set(code[0][0] == "$"? code[0].slice(1): code[0], result);
+      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  result;
     },
     if: (code, context)=>{
       return interpret(code[0],context) ? 
