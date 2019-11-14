@@ -155,6 +155,7 @@
     tabSize: 2
   });
   var resizeHandle = new ResizeHandle($(".resize-handler"),codes,canvas);
+  var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"));
 })();
 
 function ResizeHandle(dom,split_left,split_right){
@@ -199,7 +200,7 @@ function ResizeHandle(dom,split_left,split_right){
     if(e.ctrlKey && e.keyCode == 'E'.charCodeAt(0)){
       e.preventDefault();
 
-      var appear = split_left.width() < 10;
+      var appear = split_left.width() < 50;
       
       var height = window.innerHeight;
 
@@ -208,7 +209,7 @@ function ResizeHandle(dom,split_left,split_right){
         split_left.resize(0,height); //hide
         split_right.resize(window.innerWidth,height); //to origin size
       }else{
-        codesProps.width = codesProps.width <= 10? 
+        codesProps.width = codesProps.width <= 50? 
           window.innerWidth/2 : codesProps.width;
         
         split_left.resize(codesProps.width, height); //expand
@@ -253,10 +254,20 @@ function Codes(dom,id,config){
   var codeMirror = CodeMirror.fromTextArea(document.querySelector("#code_edit"),config);
   codeMirror.setSize(0, window.innerHeight - 60 - 100);
 
+    $("#runScript").click(function(){
+    console.log(codeMirror.getValue())
+    console.time("parser process");
+    let lisp = new LispRuntime(commonLib);
+    let parsedCode = lisp.parse(codeMirror.getValue());
+    lisp.forceRun(parsedCode);
+    console.timeEnd("parser process");
+
+  });
+
   this.resize = function(width, height){
     $(".CodeMirror").width(width);
 
-    if(width > 10){
+    if(width > 50){
       $("#runScript").removeClass("hide");
     }else{
       $("#runScript").addClass("hide");
@@ -265,5 +276,19 @@ function Codes(dom,id,config){
 
   this.width = function(){
     return $(".CodeMirror").width();
+  }
+}
+
+function OptionBar(dom,targetButton){
+  targetButton.click(toggle);
+  $("#closeOptionBar").click(toggle)
+
+  function toggle(){
+    if(dom.hasClass("hide")){
+      dom.removeClass("hide");
+    }else{
+      dom.addClass("hide");
+    }
+    
   }
 }

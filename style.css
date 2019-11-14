@@ -2,6 +2,7 @@
   --highlight-button-color: rgba(255,255,255,.25);
   --highlight-lines-color: rgba(255,255,255,.45);
   --background-color: #263238;
+  --background-light-color: #4f5b62;
   /* --primary-background-color: #37474f; */
   /* --primary-background-color: #00796b; */
   --primary-background-color: var(--background-color);
@@ -127,6 +128,9 @@ body{
   border-radius: 50%;
   transition: background 0.3s;
   cursor: pointer;
+  outline:none;
+  border:none;
+  background: transparent;
 }
 
 .round-button:hover{
@@ -257,4 +261,25 @@ body{
 
 .float-btn.hide{
   margin-left: -100px;
+}
+
+.options_bar{
+  height: 100%;
+  width: 70px;
+  right:0;
+  top:0;
+  bottom:0;
+  position:fixed;
+  background: var(--background-light-color);
+  z-index: 200;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  padding-top: 8px;
+  transition: all 0.2s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.options_bar.hide{
+  margin-right: -90px;
+  transition: all 0.2s cubic-bezier(0.4, 0.0, 1, 1);
 }

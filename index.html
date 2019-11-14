@@ -27,8 +27,9 @@
     <div class="nav-bar-spacer">
     </div>
     <!-- <div class="material-icons round-button" style="color:var(--background-text-color)" title="Toggle Codes">web</div> -->
-    <div class="material-icons round-button" style="color:var(--background-text-color)" title="options">keyboard_arrow_left</div>
+    <button class="material-icons round-button" style="color:var(--background-text-color)" title="Expand options" id="expand_option_bar">keyboard_arrow_left</button>
   </div>
+
   <div class="bodyContainer">
     <textarea id="code_edit"></textarea>
     
@@ -38,9 +39,13 @@
         </button>
       <div class="splitLine"></div>
       <div class="resize-handler" draggable="false"></div>
-      <div class="options_bar"></div>
+    </div>
+
+    <div class="options_bar hide">
+      <button class="material-icons round-button" style="color:var(--background-text-color)" title="Fold options" id="closeOptionBar">keyboard_arrow_right</button>
     </div>
   </div>
+
   
   <script src="src/librarys.js"></script>
   <script src="src/lisp-beta.js"></script>
