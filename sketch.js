@@ -1,5 +1,5 @@
 (()=>{
-  var canvas = new Canvas(document.querySelector("#canvasContainer"),{});
+  window.canvas = new Canvas(document.querySelector("#canvasContainer"),{});
   var codes = new Codes(document.querySelector("#code_edit"), "", {
     lineNumbers: true,
     width: 300,
@@ -63,7 +63,7 @@ function ResizeHandle(dom,split_left,split_right){
         split_left.resize(0,height); //hide
         split_right.resize(window.innerWidth,height); //to origin size
       }else{
-        codesProps.width = codesProps.width <= 150? 
+        codesProps.width = codesProps.width <= 100? 
           window.innerWidth/2 : codesProps.width;
         
         split_left.resize(codesProps.width, height); //expand
@@ -101,6 +101,10 @@ function Canvas(container, events){
     sketch.resizeCanvas(width,height);
     $("#canvasContainer").css("marginLeft",window.innerWidth - width)
     if(!dontRedraw) rerenderingCanvas()
+  }
+
+  this.exec = (feedback)=>{
+    feedback(sketch);
   }
 }
 
