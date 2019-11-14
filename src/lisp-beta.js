@@ -30,18 +30,13 @@ function LispRuntime(lib={}){
 
   const asyncFuncs = {
     let: (code, context)=>{
-      let result = interpret(code[1], context);
-      console.log(code[1]);
-      console.log(result);
-      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  result;
+      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1], context);
     },
     if: (code, context)=>{
-      console.log("if else");
-      console.log(code);
       return interpret(code[0],context) === true? 
         interpret(code[1], context):
         (code[2]? interpret(code[2],context): null);
-    },
+    }
   }
 
   function Context(scope_vars, parent){
@@ -51,21 +46,17 @@ function LispRuntime(lib={}){
     this.get = function(key){
       return key in this.scope ? this.scope[key] : (this.parent ? this.parent.get(key): undefined);
     }
-
-    // this.set = function(key,value){
-    //   this.scope[key] = value;
-    // }
   }
 
   function interpretList(code, context){
-    if(code.length > 0 && code[0].slice(1) in asyncFuncs){
+    if(code.length > 0 && typeof code[0] == "string" && code[0].slice(1) in asyncFuncs){
       var func_name = code.shift();
+      console.log("async function!!")
       asyncFuncs[func_name.slice(1)](code,context);
     }else{
-      var result = code.map((e, i)=> interpret(e, context));
+      var result = code.map((e, i)=>interpret(e, context));
       if(result[0] instanceof Function){
         let func = result.shift();
-        console.log(result);
         return func.apply(undefined, [result]);
       }
       return result;

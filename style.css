@@ -1,4 +1,22 @@
-:root{
+body.light{
+  --highlight-button-color: rgba(0,0,0,.25);
+  --highlight-lines-color: rgba(0,0,0,.45);
+  --background-color: #eeeeee;
+  --background-light-color: #e2e2e2;
+  /* --primary-background-color: #37474f; */
+  /* --primary-background-color: #00796b; */
+  --primary-background-color: var(--background-color);
+  --editor-background: white;
+  --background-text-color: black;
+  --secondary-color:#ffb300;
+  --linenumber-color: rgba(0,0,0,0.45);
+
+  --scriptrun-flaot-btn-opacity: 1;
+
+  --nav-bar-height: 60px;
+}
+
+body.dark{
   --highlight-button-color: rgba(255,255,255,.25);
   --highlight-lines-color: rgba(255,255,255,.45);
   --background-color: #263238;
@@ -9,6 +27,9 @@
   --editor-background: black;
   --background-text-color: white;
   --secondary-color:#ffb300;
+  --linenumber-color: rgba(255,255,255,0.45);
+
+  --scriptrun-flaot-btn-opacity: 0.45;
 
   --nav-bar-height: 60px;
 }
@@ -177,10 +198,15 @@ body{
 
 .CodeMirror div.CodeMirror-cursor {
   border-left: 1px solid var(--background-text-color);
+  background: transparent;
 }
 
 .CodeMirror-scroll{
   overflow-x: scroll;
+}
+
+.cm-s-neo .CodeMirror-linenumber{
+  color:var(--linenumber-color);
 }
 
 .nav-bar-title{
@@ -232,7 +258,7 @@ body{
   border:none;
   outline:none;
   transition: all 0.3s;
-  opacity: 0.45;
+  opacity: var(--scriptrun-flaot-btn-opacity);
 }
 
 .float-btn:hover{
