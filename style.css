@@ -310,3 +310,60 @@ body{
   margin-right: -90px;
   transition: all 0.2s cubic-bezier(0.4, 0.0, 1, 1);
 }
+
+#menuContainer{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position:fixed;
+  overflow: hidden;
+  z-index: 500;
+}
+
+.menu-background{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position:fixed;
+  overflow: hidden;
+  background:rgba(0,0,0,.45);
+  z-index: 501;
+  transition: all 0.1s;
+}
+
+.menu-div{
+  top:0;
+  left:0;
+  margin: 10px;
+  margin-top: 65px;
+  position:fixed;
+  overflow: hidden;
+  background:white;
+  width: 350px;
+  height: 400px;
+  border-radius: 10px;
+  z-index: 501;
+  transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.menu-div-row{
+  display:flex;
+  align-items: center;
+}
+
+.menu-div-row__item{
+  width: 166px;
+  height: 166px;
+
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  
+  border:1px solid rgba(0,0,0,.45);
+}
+
+.menu-div.hide{
+  margin-top: 50px;
+}

@@ -11,6 +11,7 @@
   });
   var resizeHandle = new ResizeHandle($(".resize-handler"),codes,canvas);
   var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"));
+  var menuContainer = new MenuContainer($("#menuContainer"),".menu-div", $("#nav-bar-menu"));
 })();
 
 function ResizeHandle(dom,split_left,split_right){
@@ -158,15 +159,23 @@ function OptionBar(dom,targetButton){
       dom.addClass("hide");
     }
   }
+}
 
-  // var optionsBar = new Vue({
-  //   el: '.options_bar',
-  //   data: {
-  //     optionList: [
-  //       [{
-          
-  //       }]
-  //     ]
-  //   }
-  // })
+function MenuContainer(dom,listDomQuery, targetButton){
+  dom.hide();
+  targetButton.click(e=>{
+    dom.fadeIn(200);
+    $(".menu-div").removeClass("hide");
+  });
+  $(".menu-background").click(e=>{
+    $(".menu-div").addClass("hide");
+    dom.fadeOut(200);
+  });
+
+  var menuLists = new Vue({
+    el:listDomQuery,
+    data:{
+      list:[1 ,2, 3]
+    }
+  })
 }
