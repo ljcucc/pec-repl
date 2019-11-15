@@ -9,12 +9,13 @@
     smartIndent:false,
     tabSize: 2
   });
-  var resizeHandle = new ResizeHandle($(".resize-handler"),codes,canvas);
+
+  var resizeHandle = new ResizeHandle($(".resize-handler"),codes,canvas,true);
   var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"));
   var menuContainer = new MenuContainer($("#menuContainer"),".menu-div", $("#nav-bar-menu"));
 })();
 
-function ResizeHandle(dom,split_left,split_right){
+function ResizeHandle(dom,split_left,split_right,mobile_enable){
   var codesProps = {
     resizing: false,
     appear:false,
@@ -22,41 +23,6 @@ function ResizeHandle(dom,split_left,split_right){
     y: 0,
     width: 0
   };
-
-  dom.mousedown(e=>{
-    codesProps = {
-      resizing: true,
-      x: e.screenX,
-      y: e.offsetY,
-      width: split_left.width() //code editor
-    };
-    const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
-    split_left.resize(leftWidth,winHieght);
-    split_right.resize(window.innerWidth - leftWidth, winHieght);
-  });
-
-  $(window).mousemove(e=>{
-    if(codesProps.resizing){
-      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
-      split_left.resize(leftWidth,winHieght);
-      split_right.resize(window.innerWidth - leftWidth, winHieght);
-    }
-  });
-
-  $(window).mouseup(e=>{
-    if(codesProps.resizing){
-      codesProps.resizing = false;
-      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
-      split_left.resize(leftWidth,winHieght);
-      split_right.resize(window.innerWidth - leftWidth, winHieght);
-    }
-  });
-
-  $(window).on("resize",e=>{
-    var height = window.innerHeight;
-    split_left.resize(split_left.width(), height); //expand
-    split_right.resize(window.innerWidth - split_left.width(), height); //resize
-  });
 
   window.addEventListener("keydown", e=>{
     if(e.ctrlKey && e.keyCode == 'E'.charCodeAt(0)){
@@ -81,6 +47,100 @@ function ResizeHandle(dom,split_left,split_right){
       console.log(appear);
     }
   })
+  
+  if(mobile_enable){
+    dom.addClass("mobile");
+
+    const winHieght = window.innerHeight, leftWidth = codesProps.width + (0 - codesProps.x);
+    console.log(leftWidth)
+    split_left.resize(leftWidth,winHieght);
+    split_right.resize(window.innerWidth - leftWidth, winHieght);
+
+    document.querySelector(".resize-handler").addEventListener('touchstart', function(e) {
+      // Cache the client X/Y coordinates
+      clientX = e.touches[0].clientX;
+
+      dom.addClass("mobile");
+
+      codesProps = {
+        resizing: true,
+        x: clientX,
+        y: e.offsetY,
+        width: split_left.width() //code editor
+      };
+      const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
+      console.log(leftWidth)
+      split_left.resize(leftWidth,winHieght);
+      split_right.resize(window.innerWidth - leftWidth, winHieght);
+
+      dom.addClass("onhover");
+    }, false);
+
+    document.querySelector(".resize-handler").addEventListener('touchmove', function(e) {
+      // Cache the client X/Y coordinates
+
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+
+      clientX = clientX > window.innerWidth? window.innerWidth: clientX;
+      clientX = clientX <  0? 0: clientX
+      
+      if(codesProps.resizing){
+        const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
+        console.log(leftWidth)
+        split_left.resize(leftWidth,winHieght);
+        split_right.resize(window.innerWidth - leftWidth, winHieght);
+      }
+    }, false);
+
+    document.querySelector(".resize-handler").addEventListener('touchend', function(e) {
+      // Cache the client X/Y coordinates      
+      if(codesProps.resizing){
+        codesProps.resizing = false;
+      }
+      dom.removeClass("onhover");
+    }, false);
+
+    
+  }
+
+  dom.mousedown(e=>{
+    codesProps = {
+      resizing: true,
+      x: e.screenX,
+      y: e.offsetY,
+      width: split_left.width() //code editor
+    };
+    const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+    split_left.resize(leftWidth,winHieght);
+    split_right.resize(window.innerWidth - leftWidth, winHieght);
+  });
+
+  
+
+  $(window).mousemove(e=>{
+    dom.removeClass("mobile");
+    if(codesProps.resizing){
+      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+      split_left.resize(leftWidth,winHieght);
+      split_right.resize(window.innerWidth - leftWidth, winHieght);
+    }
+  });
+
+  $(window).mouseup(e=>{
+    if(codesProps.resizing){
+      codesProps.resizing = false;
+      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+      split_left.resize(leftWidth,winHieght);
+      split_right.resize(window.innerWidth - leftWidth, winHieght);
+    }
+  });
+
+  $(window).on("resize",e=>{
+    var height = window.innerHeight;
+    split_left.resize(split_left.width(), height); //expand
+    split_right.resize(window.innerWidth - split_left.width(), height); //resize
+  });
 }
 
 function Canvas(container, events){
@@ -94,8 +154,13 @@ function Canvas(container, events){
   }, container);
 
   function rerenderingCanvas(){
-    sketch.background(getComputedStyle(document.body).getPropertyValue('--background-color'));
-    sketch.stroke(getComputedStyle(document.body).getPropertyValue('--highlight-lines-color')); 
+    try{
+      sketch.background(getComputedStyle(document.body).getPropertyValue('--background-color'));
+      sketch.stroke(getComputedStyle(document.body).getPropertyValue('--highlight-lines-color')); 
+    }catch(e){
+
+    }
+    
     const padding = 14;
     for(let w = padding; w < sketch.width; w+= padding){
       for(let h = padding; h < sketch.height; h+= padding){
