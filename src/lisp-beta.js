@@ -36,6 +36,15 @@ function LispRuntime(lib={}){
       return interpret(code[0],context) === true? 
         interpret(code[1], context):
         (code[2]? interpret(code[2],context): null);
+    },
+    map: (code, context)=>{
+      let result = interpret(code[0],context);
+      console.log(result);
+      return result.map((e, i)=>{
+        let c = new Context({},context);
+        c.scope[code[1].slice(1)] = i;
+        return interpret(code[2],c);
+      });
     }
   }
 

@@ -37,5 +37,11 @@ var commonLib = {
   },
   rect:(e)=>{
     window.canvas.sketch.rect(e[0], e[1], e[2], e[3]);
+  },
+  circle:(e)=>{
+    window.canvas.sketch.circle(e[0], e[1], e[2]);
+  },
+  array:(e)=>{
+    return new Array(e[0]).fill(e[1] || 0);
   }
 };
