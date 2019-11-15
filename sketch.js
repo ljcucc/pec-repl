@@ -21,7 +21,8 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
     appear:false,
     x: 0,
     y: 0,
-    width: 0
+    width: 0,
+    mobile:false
   };
 
   window.addEventListener("keydown", e=>{
@@ -49,7 +50,7 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
   })
   
   if(mobile_enable){
-    dom.addClass("mobile");
+    // dom.addClass("mobile");
 
     const winHieght = window.innerHeight, leftWidth = codesProps.width + (0 - codesProps.x);
     console.log(leftWidth)
@@ -60,13 +61,16 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       // Cache the client X/Y coordinates
       clientX = e.touches[0].clientX;
 
+      clientX = clientX > window.innerWidth - 4? window.innerWidth -4: clientX;
+      clientX = clientX <  4? 4: clientX
+
       dom.addClass("mobile");
 
       codesProps = {
         resizing: true,
         x: clientX,
         y: e.offsetY,
-        width: split_left.width() //code editor
+        width: split_left.width() //code editor,
       };
       const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
       console.log(leftWidth)
@@ -82,7 +86,7 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
 
-      clientX = clientX > window.innerWidth? window.innerWidth: clientX;
+      clientX = clientX > window.innerWidth -4? window.innerWidth -4: clientX;
       clientX = clientX <  4? 4: clientX
       
       if(codesProps.resizing){
