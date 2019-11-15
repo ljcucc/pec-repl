@@ -83,7 +83,7 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       clientY = e.touches[0].clientY;
 
       clientX = clientX > window.innerWidth? window.innerWidth: clientX;
-      clientX = clientX <  8? 8: clientX
+      clientX = clientX <  4? 4: clientX
       
       if(codesProps.resizing){
         const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
@@ -112,8 +112,8 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       width: split_left.width() //code editor
     };
 
-    clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
-    clientX = clientX <  8? 8: clientX
+    clientX = e.screenX > window.innerWidth-4? window.innerWidth-4: e.screenX;
+    clientX = clientX <  4? 4: clientX
 
     const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
     split_left.resize(leftWidth,winHieght);
@@ -125,8 +125,8 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
   $(window).mousemove(e=>{
     dom.removeClass("mobile");
     if(codesProps.resizing){
-      clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
-      clientX = clientX <  8? 8: clientX
+      clientX = e.screenX > window.innerWidth-4? window.innerWidth-4: e.screenX;
+      clientX = clientX <  4? 4: clientX
       const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
       split_left.resize(leftWidth,winHieght);
       split_right.resize(window.innerWidth - leftWidth, winHieght);
@@ -136,8 +136,8 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
   $(window).mouseup(e=>{
     if(codesProps.resizing){
       codesProps.resizing = false;
-      clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
-      clientX = clientX <  8? 8: clientX
+      clientX = e.screenX > window.innerWidth-4? window.innerWidth-4: e.screenX;
+      clientX = clientX <  4? 4: clientX
       const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
       split_left.resize(leftWidth,winHieght);
       split_right.resize(window.innerWidth - leftWidth, winHieght);
