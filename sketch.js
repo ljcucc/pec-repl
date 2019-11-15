@@ -83,7 +83,7 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       clientY = e.touches[0].clientY;
 
       clientX = clientX > window.innerWidth? window.innerWidth: clientX;
-      clientX = clientX <  0? 0: clientX
+      clientX = clientX <  8? 8: clientX
       
       if(codesProps.resizing){
         const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
@@ -111,7 +111,11 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
       y: e.offsetY,
       width: split_left.width() //code editor
     };
-    const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+
+    clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
+    clientX = clientX <  8? 8: clientX
+
+    const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
     split_left.resize(leftWidth,winHieght);
     split_right.resize(window.innerWidth - leftWidth, winHieght);
   });
@@ -121,7 +125,9 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
   $(window).mousemove(e=>{
     dom.removeClass("mobile");
     if(codesProps.resizing){
-      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+      clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
+      clientX = clientX <  8? 8: clientX
+      const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
       split_left.resize(leftWidth,winHieght);
       split_right.resize(window.innerWidth - leftWidth, winHieght);
     }
@@ -130,7 +136,9 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
   $(window).mouseup(e=>{
     if(codesProps.resizing){
       codesProps.resizing = false;
-      const winHieght = window.innerHeight, leftWidth = codesProps.width + (e.screenX - codesProps.x);
+      clientX = e.screenX > window.innerWidth-8? window.innerWidth-8: e.screenX;
+      clientX = clientX <  8? 8: clientX
+      const winHieght = window.innerHeight, leftWidth = codesProps.width + (clientX - codesProps.x);
       split_left.resize(leftWidth,winHieght);
       split_right.resize(window.innerWidth - leftWidth, winHieght);
     }
