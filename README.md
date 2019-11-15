@@ -7,3 +7,4 @@ A Imitation of Ronin which added more functions.
 * forms UI controls
 * Cloud storage
 * Share it on community platform
+* Mobile friendly supports
