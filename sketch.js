@@ -4,8 +4,8 @@
     lineNumbers: true,
     width: 300,
     textSize: 16,
-    theme: "material-darker",
-    // theme: "neo",
+    // theme: "material-darker",
+    theme: "neo",
     smartIndent:false,
     tabSize: 2
   });
