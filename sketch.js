@@ -174,15 +174,15 @@ function Canvas(container, events){
         dragPosition[1] += (sketch.mouseY - lastPosition[1]);
         lastPosition = [sketch.mouseX,sketch.mouseY];
         update = true;
-      }else{
+      }else if(lastPosition){
         lastPosition = null;
         update = true;
       }
     }
 
     sketch.mousePressed = ()=>{
-      console.log("mousePressed");
-      lastPosition = [sketch.mouseX,sketch.mouseY];
+      if(sketch.mouseX > 0 && sketch.mouseY > 0)
+        lastPosition = [sketch.mouseX,sketch.mouseY];
     }
   }, container);
 
@@ -202,7 +202,7 @@ function Canvas(container, events){
         sketch.point(w,h);
       }
     }
-    
+
     sketch.image(graphicsProcess.render(!!dragPosition), dragPosition[0],dragPosition[1]);
 
     // sketch.canvas.getContext("2d").drawImage(graphicsProcess.render(),0,0);
