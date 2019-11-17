@@ -152,6 +152,9 @@ function ResizeHandle(dom,split_left,split_right,mobile_enable){
 }
 
 function Canvas(container, events){
+  var update = false;
+  var dragPosition = [0,0];
+  var lastPosition = null;
   var sketch = new p5(function(sketch){
     sketch.setup = ()=>{
       sketch.resizeCanvas(window.innerWidth,window.innerHeight);
@@ -159,7 +162,31 @@ function Canvas(container, events){
 
       rerenderingCanvas();
     }
+
+    sketch.draw = ()=>{
+      if(update){
+        update = false;
+        rerenderingCanvas()
+      }
+
+      if(lastPosition && sketch.mouseIsPressed && sketch.mouseX > 5 && sketch.mouseButton == sketch.LEFT){
+        dragPosition[0] += (sketch.mouseX - lastPosition[0]);
+        dragPosition[1] += (sketch.mouseY - lastPosition[1]);
+        lastPosition = [sketch.mouseX,sketch.mouseY];
+        update = true;
+      }else{
+        lastPosition = null;
+        update = true;
+      }
+    }
+
+    sketch.mousePressed = ()=>{
+      console.log("mousePressed");
+      lastPosition = [sketch.mouseX,sketch.mouseY];
+    }
   }, container);
+
+  var graphicsProcess = new GraphicsProcess(sketch.createGraphics(window.innerWidth,window.innerHeight));
 
   function rerenderingCanvas(){
     try{
@@ -169,18 +196,23 @@ function Canvas(container, events){
 
     }
     
-    const padding = 14;
-    for(let w = padding; w < sketch.width; w+= padding){
-      for(let h = padding; h < sketch.height; h+= padding){
+    const padding = 15;
+    for(let w = 0; w < sketch.width; w+= padding){
+      for(let h = 0; h < sketch.height; h+= padding){
         sketch.point(w,h);
       }
     }
+    
+    sketch.image(graphicsProcess.render(!!dragPosition), dragPosition[0],dragPosition[1]);
+
+    // sketch.canvas.getContext("2d").drawImage(graphicsProcess.render(),0,0);
   }
 
   this.resize = function(width, height, dontRedraw){
     sketch.resizeCanvas(width,height);
+    // graphicsProcess.canvas.resizeCanvas(width,height)
     $("#canvasContainer").css("marginLeft",window.innerWidth - width)
-    if(!dontRedraw) rerenderingCanvas()
+    if(!dontRedraw) update = true;
   }
 
   this.exec = (feedback)=>{
@@ -188,7 +220,9 @@ function Canvas(container, events){
   }
 
   this.sketch = sketch;
-  this.rerenderingCanvas = rerenderingCanvas;
+  this.rerenderingCanvas = ()=>{
+    update = true;
+  }
 }
 
 function Codes(dom,id,config){

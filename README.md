@@ -1,5 +1,6 @@
 # Power Editing
-A Imitation of Ronin which added more functions.
+Using coding to do any operation.
+
 ## Features different with Ronin
 * Highlight syntax code editor
 * Draggable resizing
