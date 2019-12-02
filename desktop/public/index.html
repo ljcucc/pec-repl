@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#000000">
+
+  <title>PowerEditing</title>
+
+  <script>
+
+    const { ipcRenderer } = require('electron');
+    const $ = require("jquery");
+
+    
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+  <script src="./src/lib/codemirror-5.49.2/lib/codemirror.js"></script>
+  <script src="./src/lib/codemirror-5.49.2/mode/commonlisp/commonlisp.js"></script>
+  <link rel="stylesheet" href="./src/lib/codemirror-5.49.2/lib/codemirror.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="./src/lib/codemirror-5.49.2/theme/material-darker.css">
+  <link rel="stylesheet" href="./src/lib/codemirror-5.49.2/theme/neo.css">
+  <link rel="stylesheet" href="./src/lib/codemirror-5.49.2/theme/monokai.css">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script>
+    // const electron  = require('electron');
+  </script>
+</head>
+<body class="light">
+  <div class="onloading hide">
+    <style>
+      .onloading{
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        position: fixed;
+        z-index: 1000;
+        background: #eeeeee;
+        transition: all 0.3s;
+      }
+      .onloading.hiding{
+        opacity:0;
+      }
+      .onloading.hide{
+        display:none;
+      }
+    </style>
+    <script>
+      var debug = true;
+      if(!debug){
+        document.querySelector(".onloading").classList.remove("hide");
+      }
+      window.addEventListener("load",e=>{
+        setTimeout(()=>{
+          document.querySelector(".onloading").classList.add("hiding");
+          console.log("loaded")
+          setTimeout(()=>{
+            document.querySelector(".onloading").classList.remove("hiding");
+            document.querySelector(".onloading").classList.add("hide");
+          },300);
+        },500);
+      });
+    </script>
+  </div>
+  <div class="nav-bar">
+    <button id="nav-bar-menu" class="round-button" title="Menu (Alt + Q)">
+        <svg style="margin-top:1px;" focusable="false" viewBox="0 0 24 24"><path style="fill:var(--background-text-color);" d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path></svg>
+    </button>
+    <div class="nav-bar-title">Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span></div>
+    <div class="nav-bar-spacer">
+    </div>
+    <div class="material-icons round-button" style="color:var(--background-text-color); margin-right: 8px;" title="Help">help_outline</div>
+    <button class="material-icons round-button" style="color:var(--background-text-color)" title="Expand options" id="expand_option_bar">keyboard_arrow_left</button>
+  </div>
+
+  <div class="bodyContainer">
+    <textarea id="code_edit">;welcome to power editing v1.0</textarea>
+    
+    <div id="canvasContainer">
+        <button class="float-btn hide" title="Run (Ctrl+Enter)" id="runScript">
+          <div class="material-icons">play_arrow</div>
+        </button>
+      <div class="splitLine"></div>
+      <div class="resize-handler" draggable="false"></div>
+    </div>
+
+    <div class="options_bar hide">
+      <button class="material-icons round-button" style="color:var(--background-text-color)" title="Fold options" id="closeOptionBar">keyboard_arrow_right</button>
+    </div>
+  </div>
+
+  <div id="menuContainer">
+    <div class="menu-background"></div>
+    <div class="menu-div hide">
+      <div class="menu-div-row">
+          <div v-for="i in list" class="menu-div-row__item"></div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="./src/graphics-process.js"></script>
+  <script src="./src/librarys.js"></script>
+  <script src="./src/lisp-beta.js"></script>
+  <!-- <script src="layouts_init.js"></script> -->
+  <script src="sketch.js"></script>
+</body>
+</html>
