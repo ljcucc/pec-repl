@@ -188,10 +188,14 @@ function Canvas(container, events){
   var update = false;
   var dragPosition = [0,0], zooming = 1;
   var lastPosition = null;
+  var graphicsProcess;
+
   var sketch = new p5(function(sketch){
     sketch.setup = ()=>{
       sketch.resizeCanvas(window.innerWidth,window.innerHeight);
       sketch.background(255);
+
+      graphicsProcess = new GraphicsProcess(sketch.createGraphics(window.innerWidth,window.innerHeight));
 
       rerenderingCanvas();
     }
@@ -219,8 +223,6 @@ function Canvas(container, events){
     }
   }, container);
 
-  var graphicsProcess = new GraphicsProcess(sketch.createGraphics(window.innerWidth,window.innerHeight));
-
   document.addEventListener("wheel",e=>{
     zooming += (e.deltaY) * -0.01;
     zooming = zooming < 0.1 ? 0.1 : zooming
@@ -242,6 +244,7 @@ function Canvas(container, events){
       }
     }
 
+    console.log(this.graphicsProcess);
     var img = graphicsProcess.render(!!dragPosition)
     sketch.image(img, dragPosition[0],dragPosition[1],img.width * zooming, img.height * zooming);
 

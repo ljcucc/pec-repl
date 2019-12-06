@@ -2,7 +2,7 @@ var commonLib = {
   debug:(e)=>{
     console.log("DEBUG: "+e);
   },
-  write:(e)=>{
+  msgbox:(e)=>{
     alert(e);
   },
   read:(e)=>{
@@ -46,14 +46,20 @@ var commonLib = {
   arr:(e)=>{
     return new Array(e[0]).fill(e[1] || 0);
   },
-  import: (e)=>{
-    e = replaceArray(e);
-  },
-  draw: (e)=>{
 
+  draw: (e)=>{
+    
+  },
+
+  newGraphicsProcess: (e)=>{
+    return new GraphicsProcess(sketch.createGraphics(window.innerWidth,window.innerHeight));
   }
 };
 
 function replaceArray(e){
   return e[0] instanceof Array && e[0].length == 1? e[0] : e;
+}
+
+function MergeLibrary(e){
+
 }

@@ -3,6 +3,10 @@
 //  and https://github.com/hundredrabbits/Ronin/blob/master/desktop/sources/scripts/lib/lisp.js
 
 function LispRuntime(lib={}){
+  var error_strings = {
+    func_paramets_type: "The data type of function paramets cannot be a const value, must be variable name like $var_name or $value."
+  }
+
   function tokenize(code){
     return code.replace(/^;.*\n?/gm, '').split('"').map((x, i)=>{
       return i % 2 === 0 ? 
@@ -52,8 +56,17 @@ function LispRuntime(lib={}){
     func: (code, context)=>{
       console.log("define a function")
       console.log(code);
-      if(code.legnth == 1) return new FunctionObj(code);
-      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
+      switch(code.length){
+        case 1: 
+          return new FunctionObj(code);
+          break;
+        case 2:
+          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
+          break;
+        case 3:
+          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[2],code[1]);
+          break;
+      }
     }
   }
 
@@ -63,13 +76,13 @@ function LispRuntime(lib={}){
 
     this.get = function(key){
       console.log(this);
-      if(key in this.scope && this.scope[key] instanceof FunctionObj) return interpret(this.scope[key].code,this);
       return key in this.scope ? this.scope[key] : (this.parent ? this.parent.get(key): undefined);
     }
   }
 
-  function FunctionObj(code){
+  function FunctionObj(code,paramets){
     this.code = code;
+    this.paramets = paramets;
   }
 
   function interpretList(code, context){
@@ -78,6 +91,16 @@ function LispRuntime(lib={}){
       console.log("async function!!")
       var result = asyncFuncs[func_name.slice(1)](code,context);
       if(result) return result;
+    }else if(code.length > 0 && typeof code[0] == "string" && context.get(code[0].slice(1)) instanceof FunctionObj){
+      var func = context.get(code.shift().slice(1)); //get function object
+      for(var i in code){ //setup paramets
+        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") throw error_string.func_paramets_type;
+        var cParamets = func.paramets[i];
+        var cContext = new Context(context);
+        
+        cContext.set(cParamets,interpret(code[i]));
+      }
+      return interpret(func.code, context);
     }else{
       var result = code.map((e, i)=>interpret(e, context));
       if(result[0] instanceof Function){
