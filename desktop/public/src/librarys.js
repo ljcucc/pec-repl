@@ -2,10 +2,10 @@ var commonLib = {
   debug:(e)=>{
     console.log("DEBUG: "+e);
   },
-  msgbox:(e)=>{
+  write:(e)=>{
     alert(e);
   },
-  inputbox:(e)=>{
+  read:(e)=>{
     if(e[0])
       return prompt(e[0]);
     else
@@ -35,11 +35,22 @@ var commonLib = {
     e = replaceArray(e);
     return e.reduce((acc,x)=>acc-x)
   },
-  array:(e)=>{
+  "*":(e)=>{
+    e = replaceArray(e);
+    return e.reduce((acc,x)=>acc*x); 
+  },
+  "/":(e)=>{
+    e =replaceArray(e);
+    return e.reduce((acc,x)=>acc/x)
+  },
+  arr:(e)=>{
     return new Array(e[0]).fill(e[1] || 0);
   },
   import: (e)=>{
     e = replaceArray(e);
+  },
+  draw: (e)=>{
+
   }
 };
 

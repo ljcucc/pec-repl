@@ -1,11 +1,24 @@
 function GraphicsProcess(canvas){
     console.log(this.canvas);
 
-    this.canvas = canvas
+    this.canvas = canvas;
          
     this.render = ()=>{
         canvas.clear();
-        canvas.rect(10,10,100,200);
+
+        for(var i in writeContents){
+            var item = writeContents[i];
+            canvas.textSize(14);
+            canvas.text(item, 0, i * 16);
+        }
+
         return canvas;
+    }
+
+    var writeContents = [];
+
+    this.write = (text)=>{
+        writeContents.push(text);
+        this.render();
     }
 }
