@@ -53,18 +53,36 @@ function LispRuntime(lib={}){
         return interpret(code[2],c);
       });
     },
-    func: (code, context)=>{
+    def: (code, context)=>{
       console.log("define a function")
       console.log(code);
+
+
       switch(code.length){
         case 1: 
           return new FunctionObj(code);
-          break;
         case 2:
-          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
+          if(code[1] instanceof Array){
+            //Process heading and tail of codes
+            var paramets = code[0];
+            if(paramets instanceof Array && paramets.length >= 3 && paramets[0] == ""){
+              paramets.shift();
+              paramets.pop();
+            }
+
+            return new FunctionObj(code[1],paramets);
+          }else {
+            context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
+          }
           break;
         case 3:
-          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[2],code[1]);
+          //Process heading and tail of codes
+          var paramets = code[1];
+          if(paramets instanceof Array && paramets.length >= 3 && paramets[0] == ""){
+            paramets.shift();
+            paramets.pop();
+          }
+          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[2],paramets);
           break;
       }
     }
@@ -92,15 +110,25 @@ function LispRuntime(lib={}){
       var result = asyncFuncs[func_name.slice(1)](code,context);
       if(result) return result;
     }else if(code.length > 0 && typeof code[0] == "string" && context.get(code[0].slice(1)) instanceof FunctionObj){
+      
       var func = context.get(code.shift().slice(1)); //get function object
-      for(var i in code){ //setup paramets
-        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") throw error_string.func_paramets_type;
-        var cParamets = func.paramets[i];
-        var cContext = new Context(context);
-        
-        cContext.set(cParamets,interpret(code[i]));
+      console.log(code);
+
+      var scope_var = {};
+      
+      for(var i in func.paramets){ //setup paramets
+        // if(! func.paramets[i].trim()) continue;
+        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") {
+          console.log(i)
+          console.log(func.paramets);
+          console.log(func.paramets[i]);
+          throw error_strings.func_paramets_type;
+        }
+        var cParamets = func.paramets[i].slice(1);
+        scope_var[cParamets] = interpret(code[i] || "" );
       }
-      return interpret(func.code, context);
+      console.log("variable setuped")
+      return interpret(func.code, new Context(scope_var, context));
     }else{
       var result = code.map((e, i)=>interpret(e, context));
       if(result[0] instanceof Function){
