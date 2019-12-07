@@ -34,10 +34,11 @@ function LispRuntime(lib={}){
 
   const asyncFuncs = {
     let: (code, context)=>{
-      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1], context);
+      // context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1], context);
+      context.set(code[0][0] == "$"? code[0].slice(1): code[0], interpret(code[1], context));
     },
     set: (code, context)=>{
-      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1], context);
+      context.set(code[0][0] == "$"? code[0].slice(1): code[0], interpret(code[1], context));
     },
     if: (code, context)=>{
       return interpret(code[0],context) === true? 
@@ -96,6 +97,19 @@ function LispRuntime(lib={}){
       console.log(this);
       return key in this.scope ? this.scope[key] : (this.parent ? this.parent.get(key): undefined);
     }
+
+    this.set = function(key,value){
+      if(key in this.scope){
+        this.scope[key] = value;
+        return true;
+      }else if(this.parent ? this.parent.get(key) : undefined){
+        console.log("calling parent")
+        this.parent.set(key,value);
+        return true;
+      }
+      this.scope[key] = value;
+      return false;
+    }
   }
 
   function FunctionObj(code,paramets){
@@ -117,17 +131,11 @@ function LispRuntime(lib={}){
       var scope_var = {};
       
       for(var i in func.paramets){ //setup paramets
-        // if(! func.paramets[i].trim()) continue;
-        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") {
-          console.log(i)
-          console.log(func.paramets);
-          console.log(func.paramets[i]);
-          throw error_strings.func_paramets_type;
-        }
+        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") throw error_strings.func_paramets_type;
         var cParamets = func.paramets[i].slice(1);
+
         scope_var[cParamets] = interpret(code[i] || "" );
       }
-      console.log("variable setuped")
       return interpret(func.code, new Context(scope_var, context));
     }else{
       var result = code.map((e, i)=>interpret(e, context));
