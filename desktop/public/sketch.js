@@ -244,7 +244,7 @@ function Canvas(container, events){
       }
     }
 
-    console.log(this.graphicsProcess);
+    // console.log(this.graphicsProcess);
     var img = graphicsProcess.render(!!dragPosition)
     sketch.image(img, dragPosition[0],dragPosition[1],img.width * zooming, img.height * zooming);
 
