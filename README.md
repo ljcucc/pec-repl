@@ -18,6 +18,25 @@ also is an imitation version of Ronin editor, which is an editor that allows you
 Warning: only support on Mac OS, Windows and Linux will support soon.
 * Docs on Google Sites:
 
+## Library
+Basic syntax:
+* `(let name value*)` Create a variable in current scope.
+* `(set name value)` Set value to a variable in current scope.
+* `(name)` call or get a function or value from variable.
+* `(def name (...args*) (code))` define a function or create a async code object.
+
+Calculations:
+* `(+ ...args)` Addiction
+* `(- ...args)` Subtraction
+* `(* ...args)` Multiply
+* `(/ ...args)` Division
+* `(join ...strings)` Join strings together.
+* `(= ...args)` fidn equals of values or and logic.
+
+Basic I/O
+* `(msgbox string)`
+
+
 ## contribution
 * Node.js 10 or higher
 * npm
