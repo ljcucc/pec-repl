@@ -34,58 +34,65 @@ function LispRuntime(lib={}){
 
   const asyncFuncs = {
     let: (code, context)=>{
-      // context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1], context);
+      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1] || "", context);
+    },
+    var: (code, context)=>{ //same as var
+      context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  interpret(code[1] || "", context);
+    },
+
+    "=": (code, context)=>{
       context.set(code[0][0] == "$"? code[0].slice(1): code[0], interpret(code[1], context));
     },
-    set: (code, context)=>{
+    set: (code, context)=>{ //same as "="
       context.set(code[0][0] == "$"? code[0].slice(1): code[0], interpret(code[1], context));
     },
-    if: (code, context)=>{
-      return interpret(code[0],context) === true? 
-        interpret(code[1], context):
-        (code[2]? interpret(code[2],context): null);
-    },
-    map: (code, context)=>{
-      let result = interpret(code[0],context);
-      console.log(result);
-      return result.map((e, i)=>{
-        let c = new Context({},context);
-        c.scope[code[1].slice(1)] = i;
-        return interpret(code[2],c);
-      });
-    },
-    def: (code, context)=>{
-      console.log("define a function")
-      console.log(code);
+    def: createAsync
+  };
+
+  function ContextAPI(context){
+    var context = context;
+    this.interpret = (code)=>{
+      return interpret(code, context);
+    };
+    this.createAsync = (code)=>{
+      createAsync(code, context);
+    }
+    this.execAsync = (func,argsCode)=>{
+      func.exec(argsCode, context);
+    }
+  }
+
+  function createAsync(code, context){
+    console.log("define a function")
+    console.log(code);
 
 
-      switch(code.length){
-        case 1: 
-          return new FunctionObj(code);
-        case 2:
-          if(code[1] instanceof Array){
-            //Process heading and tail of codes
-            var paramets = code[0];
-            if(paramets instanceof Array && paramets.length >= 3 && paramets[0] == ""){
-              paramets.shift();
-              paramets.pop();
-            }
-
-            return new FunctionObj(code[1],paramets);
-          }else {
-            context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
-          }
-          break;
-        case 3:
+    switch(code.length){
+      case 1: 
+        return new FunctionObj(code);
+      case 2:
+        if(code[1] instanceof Array && code[0] instanceof Array){
           //Process heading and tail of codes
-          var paramets = code[1];
+          var paramets = code[0];
           if(paramets instanceof Array && paramets.length >= 3 && paramets[0] == ""){
             paramets.shift();
             paramets.pop();
           }
-          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[2],paramets);
-          break;
-      }
+
+          return new FunctionObj(code[1],paramets);
+        }else {
+          context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[1]);
+        }
+        break;
+      case 3:
+        //Process heading and tail of codes
+        var paramets = code[1];
+        if(paramets instanceof Array && paramets.length >= 3 && paramets[0] == ""){
+          paramets.shift();
+          paramets.pop();
+        }
+        context.scope[code[0][0] == "$"? code[0].slice(1): code[0]] =  new FunctionObj(code[2],paramets);
+        break;
     }
   }
 
@@ -115,6 +122,19 @@ function LispRuntime(lib={}){
   function FunctionObj(code,paramets){
     this.code = code;
     this.paramets = paramets;
+
+    this.exec = (code,context)=>{
+    
+      var scope_var = {};
+      
+      for(var i in this.paramets){ //setup paramets
+        if(typeof this.paramets[i] != "string" || this.paramets[i][0] != "$") throw error_strings.func_paramets_type;
+        var cParamets = this.paramets[i].slice(1);
+  
+        scope_var[cParamets] = interpret(code[i] || "" );
+      }
+      return interpret(this.code, new Context(scope_var, context));
+    }
   }
 
   function interpretList(code, context){
@@ -124,26 +144,14 @@ function LispRuntime(lib={}){
       var result = asyncFuncs[func_name.slice(1)](code,context);
       if(result) return result;
     }else if(code.length > 0 && typeof code[0] == "string" && context.get(code[0].slice(1)) instanceof FunctionObj){
-      
       var func = context.get(code.shift().slice(1)); //get function object
-      console.log(code);
-
-      var scope_var = {};
-      
-      for(var i in func.paramets){ //setup paramets
-        if(typeof func.paramets[i] != "string" || func.paramets[i][0] != "$") throw error_strings.func_paramets_type;
-        var cParamets = func.paramets[i].slice(1);
-
-        scope_var[cParamets] = interpret(code[i] || "" );
-      }
-      return interpret(func.code, new Context(scope_var, context));
+      func.exec(code,context);
     }else{
-      var result = code.map((e, i)=>interpret(e, context));
-      if(result[0] instanceof Function){
-        let func = result.shift();
-        return func.apply(undefined, [result]);
+      if(typeof code[0] == "string" && context.get(code[0].slice(1)) instanceof Function){
+        let func = code.shift().slice(1);
+        return context.get(func).apply(undefined, [code, new ContextAPI(context)]);
       }
-      return result;
+      return code.map((e, i)=>interpret(e, context));
     }
   }
 
