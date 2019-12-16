@@ -47,6 +47,8 @@ body{
   /* background:var(--background-color); */
   background: var(--background-color);
   height: 100%;
+
+  touch-action: none;
 }
 
 .bodyContainer{

@@ -16,7 +16,7 @@ also is an imitation version of Ronin editor, which is an editor that allows you
 
 ## Get Started 
 Warning: only support on Mac OS, Windows and Linux will support soon.
-* Docs on Google Sites:
+* Docs on Google Sites: https://sites.google.com/view/power-editing
 
 ## Library
 Basic syntax:
@@ -33,8 +33,13 @@ Calculations:
 * `(join ...strings)` Join strings together.
 * `(= ...args)` fidn equals of values or and logic.
 
+External Functions:
+* `(date string)` String log with date
+* `(date)` Get date string
+
 Basic I/O
 * `(msgbox string)`
+* `(write string)`
 
 
 ## contribution

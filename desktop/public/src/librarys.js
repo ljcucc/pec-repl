@@ -161,9 +161,28 @@ const commonLib = {
     }
     console.log(">>> Else code");
   },
-
-  draw: (e)=>{
+  
+  write:(code, context)=>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+    
+    window.canvas.getGraphicsProcess().write(e[0]);
   },
+
+  date: (code, context)=>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    if(e[0] && e.length == 1){
+      return "["+String(new Date().toISOString()) + "] ⇒ " + e[0];
+    }else{
+      return String(new Date());
+    }
+  },
+
+  reset: (code, context)=>{
+
+  }
 };
 
 function replaceArray(e){

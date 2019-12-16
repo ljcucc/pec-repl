@@ -2,23 +2,50 @@ function GraphicsProcess(canvas){
     console.log(this.canvas);
 
     this.canvas = canvas;
+
+    var writer;
+
+    init();
          
     this.render = ()=>{
         canvas.clear();
 
-        for(var i in writeContents){
-            var item = writeContents[i];
-            canvas.textSize(14);
-            canvas.text(item, 0, i * 16);
-        }
+        writer.render();
 
         return canvas;
     }
 
-    var writeContents = [];
-
     this.write = (text)=>{
-        writeContents.push(text);
-        this.render();
+        writer.write(text);
+        togglerRendering();
+    }
+
+    this.reset = ()=>{
+        init();
+    }
+
+    function Writer(canvas){
+        this.writeContents = [];
+        this.write = (text)=>{
+            this.writeContents.push(text);
+            togglerRendering();
+        }
+
+        this.render = ()=>{
+            for(var i in this.writeContents){
+                var item = this.writeContents[i];
+                canvas.textSize(14);
+                canvas.textFont("monospace")
+                canvas.text(String(item), 0 , (Number(i)+1) * 14);
+            }
+        }
+    }
+
+    function togglerRendering(){
+        window.canvas.rerenderingCanvas();
+    }
+
+    function init(){
+        writer = new Writer(canvas);
     }
 }
