@@ -13,6 +13,7 @@
   var resizeHandle = new ResizeHandle($(".resize-handler"), codes, canvas, true);
   var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"));
   var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"));
+  var variableForm = new VariableForm("#variable-form");
 })();
 
 function ResizeHandle(dom, split_left, split_right, mobile_enable) {
@@ -413,6 +414,15 @@ function MenuContainer(dom, listDomQuery, targetButton) {
     el: listDomQuery,
     data: {
       list: [1, 2, 3]
+    }
+  })
+}
+
+function VariableForm(el){
+  var vueCom = new Vue({
+    el,
+    data:{
+      show: false
     }
   })
 }
