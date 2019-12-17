@@ -1,51 +1,32 @@
-function GraphicsProcess(canvas){
-    console.log(this.canvas);
+function GraphicsProcess(canvas) {
+    // console.log(this.canvas);
 
     this.canvas = canvas;
 
-    var writer;
-
-    init();
-         
-    this.render = ()=>{
-        canvas.clear();
-
-        writer.render();
-
+    this.render = () => {
         return canvas;
     }
 
-    this.write = (text)=>{
-        writer.write(text);
-        togglerRendering();
+    var positionCount = 0;
+    this.write = (text) => {
+        positionCount += 14;
+        canvas.textSize(14);
+        canvas.textFont("monospace")
+        canvas.text(String(text), 0, positionCount);
     }
 
-    this.reset = ()=>{
-        init();
+    this.image = (source, x, y, scale) => {
+        var img = new Image();
+        img.onload = ()=>{
+            canvas.canvas.getContext("2d").drawImage(img, x, y, img.width * scale, img.height * scale);
+            window.canvas.rerenderingCanvas();
+        };
+        img.src = String(source);
+        console.log("Image loader setuped");
     }
 
-    function Writer(canvas){
-        this.writeContents = [];
-        this.write = (text)=>{
-            this.writeContents.push(text);
-            togglerRendering();
-        }
-
-        this.render = ()=>{
-            for(var i in this.writeContents){
-                var item = this.writeContents[i];
-                canvas.textSize(14);
-                canvas.textFont("monospace")
-                canvas.text(String(item), 0 , (Number(i)+1) * 14);
-            }
-        }
-    }
-
-    function togglerRendering(){
-        window.canvas.rerenderingCanvas();
-    }
-
-    function init(){
-        writer = new Writer(canvas);
+    this.reset = () => {
+        canvas.clear();
+        positionCount = 0;
     }
 }

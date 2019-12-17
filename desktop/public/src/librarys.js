@@ -57,7 +57,7 @@
 //   },
 
 //   draw: (e)=>{
-    
+
 //   },
 
 //   newGraphicsProcess: (e)=>{
@@ -66,129 +66,140 @@
 // };
 
 const commonLib = {
-  debug:(e)=>{
-    console.log("DEBUG: "+e);
+  debug: (e) => {
+    console.log("DEBUG: " + e);
   },
-  msgbox:(code,context)=>{
+  msgbox: (code, context) => {
     var e = context.interpret(code);
     alert(e);
   },
-  read:(code,context)=>{
+  read: (code, context) => {
     var e = context.interpret(code);
-    if(e[0])
+    if (e[0])
       return prompt(e[0]);
     else
       return prompt("input:");
   },
-  join:(code,context)=>{
+  join: (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
     return e.join("");
   },
-  true:(e)=> true,
-  false:(e)=> false,
-  "==": (code,context)=>{
+  true: (e) => true,
+  false: (e) => false,
+  "==": (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
 
-    if(e instanceof Array){
-      for(var i in e){
-        if(e[i] != e[0]) return false;
+    if (e instanceof Array) {
+      for (var i in e) {
+        if (e[i] != e[0]) return false;
       }
       return true;
     }
   },
-  "+":(code,context)=>{
+  "+": (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
-    return e.reduce((acc,x)=>acc+x);
+    return e.reduce((acc, x) => acc + x);
   },
-  "-":(code,context)=>{
+  "-": (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
-    return e.reduce((acc,x)=>acc-x)
+    return e.reduce((acc, x) => acc - x)
   },
-  "*":(code,context)=>{
+  "*": (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
-    return e.reduce((acc,x)=>acc*x); 
+    return e.reduce((acc, x) => acc * x);
   },
-  "/":(code,context)=>{
+  "/": (code, context) => {
     var e = context.interpret(code);
-    e =replaceArray(e);
-    return e.reduce((acc,x)=>acc/x)
+    e = replaceArray(e);
+    return e.reduce((acc, x) => acc / x)
   },
-  ">":(code,context)=>{
+  ">": (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
     var result = 0;
-    for(var i in e){
-      if(i == 0 ) continue;
-      result += (e[i-1] > e[i]? 1 : 0);
+    for (var i in e) {
+      if (i == 0) continue;
+      result += (e[i - 1] > e[i] ? 1 : 0);
     }
-    return result == e.length-1;
+    return result == e.length - 1;
   },
-  arr:(code,context)=>{
+  arr: (code, context) => {
     var e = context.interpret(code);
     return new Array(e[0]).fill(e[1] || 0);
   },
 
-  if:(code,context)=>{
+  if: (code, context) => {
     const errorMsg = "[Syntax Error]: the format of if conditions is wrong. It should be looks like: (if (condition1) (code1) (condition2) (code2) ... (condition-n) (code-n) (else-code))";
-    
+
     console.log("running [if]");
 
-    if(code.length == 1) throw errorMsg;
+    if (code.length == 1) throw errorMsg;
     var elseCode;
-    if(code.length >= 3 && code.length % 2 == 1){
+    if (code.length >= 3 && code.length % 2 == 1) {
       console.log("there have an else code");
       elseCode = code.pop();
     }
 
-    while(code.length > 3){
+    while (code.length > 3) {
       var ifCondition = context.interpret(code.shift());
       var ifCode = code.shift();
-      if(ifCondition){
+      if (ifCondition) {
         context.interpret(ifCode);
         console.log(">>> if code is true");
         return;
       }
     }
 
-    if(elseCode){
+    if (elseCode) {
       context.interpret(elseCode);
       console.log("running else code");
     }
     console.log(">>> Else code");
   },
-  
-  write:(code, context)=>{
+
+  write: (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
-    
+
     window.canvas.getGraphicsProcess().write(e[0]);
   },
 
-  date: (code, context)=>{
+  image: (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
 
-    if(e[0] && e.length == 1){
-      return "["+String(new Date().toISOString()) + "] ⇒ " + e[0];
-    }else{
+    if(e.length == 4)
+      window.canvas.getGraphicsProcess().image(e[0],e[1],e[2],e[3])
+    else{
+      window.canvas.getGraphicsProcess().image(e[0], 0, 0, e[1]);
+    }
+  },
+
+  date: (code, context) => {
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    if (e[0] && e.length == 1) {
+      return "[" + String(new Date().toISOString()) + "] ⇒ " + e[0];
+    } else {
       return String(new Date());
     }
   },
 
-  reset: (code, context)=>{
-
+  clear: (code, context) => {
+    this.canvas.getGraphicsProcess().reset();
   }
 };
 
-function replaceArray(e){
-  return e[0] instanceof Array && e[0].length == 1? e[0] : e;
+function replaceArray(e) {
+  return e[0] instanceof Array && e[0].length == 1 ? e[0] : e;
 }
 
-function MergeLibrary(e){
+function MergeLibrary(e) {
 
 }
