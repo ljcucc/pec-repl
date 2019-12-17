@@ -21,7 +21,7 @@ Warning: only support on Mac OS, Windows and Linux will support soon.
 ## Library
 Basic syntax:
 * `(let name value*)` Create a variable in current scope.
-* `(set name value)` Set value to a variable in current scope.
+* `(= name value)` Set value to a variable in current scope.
 * `(name)` call or get a function or value from variable.
 * `(def name (...args*) (code))` define a function or create a async code object.
 
@@ -31,7 +31,7 @@ Calculations:
 * `(* ...args)` Multiply
 * `(/ ...args)` Division
 * `(join ...strings)` Join strings together.
-* `(= ...args)` fidn equals of values or and logic.
+* `(== ...args)` fidn equals of values or and logic.
 
 External Functions:
 * `(date string)` String log with date
