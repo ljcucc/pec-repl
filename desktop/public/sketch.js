@@ -319,7 +319,7 @@ function Codes(dom, id, config) {
     window.canvas.rerenderingCanvas();
 
     console.time("parser process");
-    var lisp = new LispRuntime(commonLib);
+    var lisp = new LispRuntime(Object.assign({}, commonLib));
     lisp.forceRun(lisp.parse(codeMirror.getValue()));
     console.timeEnd("parser process");
   });
@@ -424,5 +424,5 @@ function VariableForm(el){
     data:{
       show: false
     }
-  })
+  });
 }
