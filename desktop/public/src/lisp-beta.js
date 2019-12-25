@@ -57,8 +57,8 @@ function LispRuntime(lib={}){
     this.createAsync = (code)=>{
       createAsync(code, context);
     }
-    this.execAsync = (func,argsCode)=>{
-      func.exec(argsCode, context);
+    this.execAsync = (func)=>{
+      func.exec("", context);
     }
   }
 
@@ -129,9 +129,8 @@ function LispRuntime(lib={}){
       
       for(var i in this.paramets){ //setup paramets
         if(typeof this.paramets[i] != "string" || this.paramets[i][0] != "$") throw error_strings.func_paramets_type;
-        var cParamets = this.paramets[i].slice(1);
-  
-        scope_var[cParamets] = interpret(code[i] || "" );
+        var cParamets = this.paramets[i].slice(1);  
+        scope_var[cParamets] = interpret(code[i] || "" ,context);
       }
       return interpret(this.code, new Context(scope_var, context));
     }
