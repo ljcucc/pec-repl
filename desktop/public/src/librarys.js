@@ -193,6 +193,74 @@ const commonLib = {
 
   clear: (code, context) => {
     this.canvas.getGraphicsProcess().reset();
+    $(".custom").remove();
+    // for(var key in DOMs){
+    //   DOMs[key].remove();
+    // }
+    DOMs = {};
+  },
+
+  button: (code, context) =>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    var id = e[0];
+
+    if(id in DOMs) return "";
+
+    var button = this.canvas.sketch.createButton(e[1]);
+    button.addClass("custom");
+    button.addClass("btn");
+    button.position(0,0);
+
+    DOMs[ e[0] ] = button;
+
+    return "";
+  },
+  label: (code, context) =>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    var id = e[0];
+
+    if(id in DOMs) return "";
+
+    var label = this.canvas.sketch.createDiv(e[1]);
+    label.addClass("custom");
+    label.addClass("label");
+    label.position(0,0);
+
+    DOMs[ e[0] ] = label;
+
+    return "";
+  },
+  setPosition: (code, context)=>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    var id = e[0];
+    DOMs[id].position(e[1],e[2]);
+  },
+  onClick: (code, context) => {
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    var id = e[0];
+    var func = e[1];
+    console.log({id, func});
+    DOMs[id].mouseClicked(()=>{
+      console.log("function code is running...");
+      console.log(func);
+      context.execAsync(func);
+    });
+  },
+  setText: (code,context)=>{
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    var id = e[0];
+
+    DOMs[id].html(e[1]);
   }
 };
 
@@ -203,3 +271,7 @@ function replaceArray(e) {
 function MergeLibrary(e) {
 
 }
+
+var DOMs = {
+
+};
