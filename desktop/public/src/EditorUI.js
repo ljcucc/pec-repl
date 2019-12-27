@@ -32,7 +32,7 @@ function ResizeHandle(dom, split_left, split_right, mobile_enable) {
     }
   });
 
-  function toggleCodeEditor(){
+  function toggleCodeEditor() {
     console.log("code-editor-toggle");
     var appear = split_left.width() < 80;
 
@@ -252,11 +252,11 @@ function Canvas(container, events) {
 
     if (dragable) {
       posDisplay = String(Math.round(zooming * 100)) + "% (" + dragPosition[0] + ", " + dragPosition[1] + ")";
-    }else{
+    } else {
       // posDisplay = "[View mode]"
     }
 
-    
+
     sketch.textSize(16);
     sketch.fill(100);
     sketch.textFont("monospace");
@@ -350,7 +350,7 @@ function OptionBar(dom, targetButton) {
             type: "button",
             icon: "code",
             title: "Toogle Commander",
-            onclick:()=>{
+            onclick: () => {
               window.resizeHandle.toggleCodeEditor();
             }
           },
@@ -377,7 +377,7 @@ function OptionBar(dom, targetButton) {
             type: "button",
             icon: "help_outline",
             title: "Help",
-            onclick:() =>{
+            onclick: () => {
               window.open("https://sites.google.com/view/power-editing")
             }
           }
@@ -404,15 +404,28 @@ function MenuContainer(dom, listDomQuery, targetButton) {
   var menuLists = new Vue({
     el: listDomQuery,
     data: {
-      list: [1, 2, 3]
+      list: [
+        {
+          icon:"folder_open",
+          title:"Open"
+        },
+        {
+          icon: "save",
+          title: "Save"
+        },
+        {
+          icon: "save",
+          title: "Save as"
+        }
+      ]
     }
   })
 }
 
-function VariableForm(el){
+function VariableForm(el) {
   var vueCom = new Vue({
     el,
-    data:{
+    data: {
       show: false
     }
   });

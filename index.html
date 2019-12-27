@@ -143,9 +143,10 @@
     <div class="menu-background"></div>
     <div class="menu-div">
       <div class="menu-div-row">
-        <div v-for="i in list" class="menu-div-row__item">
-          <i class="material-icons">{{i.icon}}</i>
-        </div>
+        <button v-for="i in list" class="menu-div-row__item">
+          <i class="material-icons" style="font-size: 30px;">{{i.icon}}</i><br>
+          {{i.title}}
+        </button>
       </div>
     </div>
 
