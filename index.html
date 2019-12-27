@@ -92,7 +92,14 @@
         </path>
       </svg>
     </button>
-    <div class="nav-bar-title">Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span></div>
+    <div class="nav-bar-title" id="filenameBox" style="display:flex;flex-direction: row;align-items: center;">
+      <div style="display:flex;flex-direction: row;align-items: center;" v-if="!edit">
+        Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span> <button v-on:click="edit = true" style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button" title="rename">short_text</button>
+      </div>
+      <div style="display:flex;flex-direction: row;align-items: center;" v-if="edit">
+        <input class="rename-input" v-model="filename"/> <button style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button" title="rename"  v-on:click="edit = false">done</button> 
+      </div>
+    </div>
     <div class="nav-bar-spacer">
     </div>
 
@@ -143,13 +150,33 @@
     <div class="menu-background"></div>
     <div class="menu-div">
       <div class="menu-div-row">
-        <button v-for="i in list" class="menu-div-row__item">
+        <button v-for="(i, index) in list" class="menu-div-row__item" v-on:click="open(index)">
           <i class="material-icons" style="font-size: 30px;">{{i.icon}}</i><br>
           {{i.title}}
         </button>
       </div>
     </div>
 
+  </div>
+
+  <div class="floating-dialog--container" id="open_file" v-if="show">
+    <div class="floating-dialog">
+      <div class="dialog-header">
+        <div class="material-icons round-button" title="close dialog" v-on:click="show = false">
+          close
+        </div>
+        <div class="dialog-title">{{title}}</div>
+      </div>
+      <div class="script-list--container">
+        <div class="script-list--item no-select" v-for="(item,index) in scripts"  v-on:click="open(index)">
+          <i class="material-icons" style="margin-right: 16px;">description</i>
+          <div style="display:flex; flex-direction: column;">
+            <span style="font-family: monospace;">{{item.val.title}}</span>
+            <span style="font-family: monospace;font-size:14px; color:rgba(0,0,0,0.35);">{{item.val.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="./desktop/public/src/graphics-process.js"></script>

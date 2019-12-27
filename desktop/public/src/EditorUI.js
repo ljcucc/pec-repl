@@ -262,10 +262,10 @@ function Canvas(container, events) {
     sketch.textFont("monospace");
     sketch.text(posDisplay, sketch.width - sketch.textWidth(posDisplay) - 16, sketch.height - 16);
 
-    console.log("rerendering...")
-    console.log({
-      width: sketch.width
-    });
+    // console.log("rerendering...")
+    // console.log({
+    //   width: sketch.width
+    // });
 
     // sketch.canvas.getContext("2d").drawImage(graphicsProcess.render(),0,0);
   }
@@ -324,6 +324,14 @@ function Codes(dom, id, config) {
 
   this.width = function () {
     return $(".CodeMirror").width();
+  }
+
+  this.get = function(){
+    return codeMirror.getValue();
+  }
+
+  this.set = function(code){
+    return codeMirror.setValue(code);
   }
 }
 
@@ -390,7 +398,7 @@ function OptionBar(dom, targetButton) {
   }
 }
 
-function MenuContainer(dom, listDomQuery, targetButton) {
+function MenuContainer(dom, listDomQuery, targetButton, callback) {
   dom.hide();
   targetButton.click(e => {
     dom.fadeIn(200);
@@ -407,19 +415,112 @@ function MenuContainer(dom, listDomQuery, targetButton) {
       list: [
         {
           icon:"folder_open",
-          title:"Open"
+          title:"Open",
+          id:"open"
+        },
+        {
+          icon:"description",
+          title:"New",
+          id:"new_script"
         },
         {
           icon: "save",
-          title: "Save"
+          title: "Save",
+          id:"save"
         },
         {
           icon: "save",
-          title: "Save as"
+          title: "Save as",
+          id:"save_as"
+        },
+        {
+          icon: "delete",
+          title: "Delete",
+          id:"delete"
+        },
+        {
+          icon: "extension",
+          title: "Plug-ins",
+          id:"plugins"
+        },
+        {
+          icon:"settings",
+          title:"Settings",
+          id:"settings"
         }
       ]
+    },
+    methods:{
+      open:(index)=>{
+        callback(menuLists.list[index].id);
+        $(".menu-div").addClass("hide");
+        dom.fadeOut(200);
+      }
     }
   })
+}
+
+function OpenFileDialog(el,load,callback){
+  var app = new Vue({
+    el,
+    data:{
+      title: "Select a file...",
+      scripts:[
+        "filename.lisp"
+      ],
+      show:false
+    },
+    mounted:reload,
+    methods:{
+      open:(index)=>{
+        callback(app.scripts[index]);
+        app.show = false
+      }
+    }
+  });
+
+  this.open = ()=>{
+    app.show = true;
+  }
+
+  this.reload = ()=>{
+    reload();
+  }
+
+  async function reload(){
+    var result = await load();
+    console.log(result);
+    var filelist = [];
+    for(var key in result){
+      filelist.push({
+        val: result[key],
+        id: key
+      });
+    }
+    console.log(filelist)
+    app.scripts = filelist;
+  }
+}
+
+function FilenameBox(el,callback){
+  var app = new Vue({
+    el,
+    data:{
+      edit: false,
+      filename:"untitled"
+    },
+    updated:()=>{
+      callback(app.filename)
+    }
+  });
+
+  this.getName = ()=>{
+    return app.filename;
+  }
+
+  this.setName = (name)=>{
+    app.filename = name;
+  }
 }
 
 function VariableForm(el) {

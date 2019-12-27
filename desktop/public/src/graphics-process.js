@@ -22,8 +22,8 @@ function GraphicsProcess(canvas) {
         this.texts = [];
 
         this.render = () => {
-            console.log("text renderering");
-            console.log(this.texts);
+            // console.log("text renderering");
+            // console.log(this.texts);
             var pos = 0;
             for (var index in this.texts) {
                 var text = this.texts[index];
