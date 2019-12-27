@@ -376,16 +376,20 @@ body{
 
 .menu-div-row{
   display:flex;
-  align-items: center;
+  flex-direction: row;
+  margin: auto;
 }
 
 .menu-div-row__item{
-  width: 166px;
+  /* width: 166px;
   height: 166px;
 
   webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  box-sizing: border-box; */
+  width: 80px;
+  height: 80px;
+  padding: 16px;
   
   /* border:1px solid rgba(0,0,0,.45); */
 }

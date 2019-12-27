@@ -98,9 +98,12 @@
 
     <div id="top_optoins" style="display:flex; flex-direction: row;align-items: center;">
       <span v-for="option in options">
-        <div v-if=" 'type' in option && option.type == 'button'" class="material-icons round-button" style="color:var(--background-text-color); margin-right: 8px;"
-          v-bind:title="('title' in option ? option.title : '')" v-on:click="('onclick' in option ? option.onclick() : ()=>{})">{{option.icon}}</div>
-        <div v-if=" 'type' in option && option.type == 'slide'" style="width: 10px;height: 30px;border-left:1px solid rgba(0,0,0,.35);"></div>
+        <div v-if=" 'type' in option && option.type == 'button'" class="material-icons round-button"
+          style="color:var(--background-text-color); margin-right: 8px;"
+          v-bind:title="('title' in option ? option.title : '')"
+          v-on:click="('onclick' in option ? option.onclick() : ()=>{})">{{option.icon}}</div>
+        <div v-if=" 'type' in option && option.type == 'slide'"
+          style="width: 10px;height: 30px;border-left:1px solid rgba(0,0,0,.35);"></div>
       </span>
     </div>
 
@@ -138,18 +141,21 @@
 
   <div id="menuContainer">
     <div class="menu-background"></div>
-    <div class="menu-div hide">
+    <div class="menu-div">
       <div class="menu-div-row">
-        <div v-for="i in list" class="menu-div-row__item"></div>
+        <div v-for="i in list" class="menu-div-row__item">
+          <i class="material-icons">{{i.icon}}</i>
+        </div>
       </div>
-
     </div>
+
   </div>
 
   <script src="./desktop/public/src/graphics-process.js"></script>
   <script src="./desktop/public/src/librarys.js"></script>
   <script src="./desktop/public/src/lisp-beta.js"></script>
   <!-- <script src="layouts_init.js"></script> -->
+  <script src="./desktop/public/src/EditorUI.js"></script>
   <script src="./desktop/public/sketch.js"></script>
 </body>
 
