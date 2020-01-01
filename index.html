@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/material-darker.css">
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/neo.css">
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/monokai.css">
-
+  
   <link rel="stylesheet" href="./desktop/public/style.css">
 
   <!-- Vue.js -->
@@ -94,10 +94,13 @@
     </button>
     <div class="nav-bar-title" id="filenameBox" style="display:flex;flex-direction: row;align-items: center;">
       <div style="display:flex;flex-direction: row;align-items: center;" v-if="!edit">
-        Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span> <button v-on:click="edit = true" style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button" title="rename">short_text</button>
+        Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span> <button v-on:click="edit = true"
+          style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button"
+          title="rename">short_text</button>
       </div>
       <div style="display:flex;flex-direction: row;align-items: center;" v-if="edit">
-        <input class="rename-input" v-model="filename"/> <button style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button" title="rename"  v-on:click="edit = false">done</button> 
+        <input class="rename-input" v-model="filename" /> <button style="margin-left:16px;color:rgba(0,0,0,0.65);"
+          class="material-icons round-button" title="rename" v-on:click="edit = false">done</button>
       </div>
     </div>
     <div class="nav-bar-spacer">
@@ -168,7 +171,7 @@
         <div class="dialog-title">{{title}}</div>
       </div>
       <div class="script-list--container">
-        <div class="script-list--item no-select" v-for="(item,index) in scripts"  v-on:click="open(index)">
+        <div class="script-list--item no-select" v-for="(item,index) in scripts" v-on:click="open(index)">
           <i class="material-icons" style="margin-right: 16px;">description</i>
           <div style="display:flex; flex-direction: column;">
             <span style="font-family: monospace;">{{item.val.title}}</span>
