@@ -49,6 +49,7 @@ body {
   box-sizing: border-box;
   /* height: calc(100vh - 50px); */
   width: 100vw;
+  height: 100%;
   /* margin-top: 50px; */
   overflow-y: hidden;
   /* align-items: center; */
@@ -73,7 +74,7 @@ body {
 
 .resize-handler {
   width: 8px;
-  height: 100%;
+  /* height: 100vh; */
   user-drag: none;
   user-select: none;
   -moz-user-select: none;
@@ -118,7 +119,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   transition: all 0.3s;
-  position: fixed;
+  /* position: fixed; */
   color: var(--background-text-color);
   display: flex;
   align-items: center;
@@ -131,7 +132,7 @@ body {
   padding-top: 6px;
   padding-bottom: 8px;
 
-  position:sticky;
+  /* position:sticky; */
 }
 
 .nav-bar:hover {
@@ -180,6 +181,7 @@ body {
   /* left: 0; */
   /* position: fixed; */
   z-index: 20;
+  max-height: 100vh;
 }
 
 .CodeMirror {
