@@ -235,6 +235,8 @@ function Canvas(container, onload) {
 
     }
 
+    console.log(sketch.width)
+
     const padding = 15;
     for (let w = 1; w < sketch.width + (dragPosition[0] > 0 ? dragPosition[0] : 0) * 1; w += padding) {
       for (let h = 1; h < sketch.height + (dragPosition[1] < 0 ? dragPosition[1] : 0) * 1; h += padding) {
@@ -272,9 +274,10 @@ function Canvas(container, onload) {
   }
 
   this.resize = function (width, height, dontRedraw) {
+    console.log(width);
     sketch.resizeCanvas(width, height - 60);
     // graphicsProcess.canvas.resizeCanvas(width,height)
-    $("#canvasContainer").css("marginLeft", window.innerWidth - width)
+    // $("#canvasContainer").css("marginLeft", window.innerWidth - width)
     if (!dontRedraw) update = true;
   }
 

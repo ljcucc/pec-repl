@@ -39,6 +39,8 @@
   <!-- Vue.js -->
   <script src="./src/vue.min.js"></script>
 
+  <script src="./desktop/public/src/lib/src-min/ace.js"></script>
+
   <script>
     // const electron  = require('electron');
   </script>
@@ -114,7 +116,10 @@
   </div>
 
   <div class="bodyContainer">
-    <textarea id="code_edit">;welcome to power editing v1.0</textarea>
+    <!-- <textarea id="code_edit">;welcome to power editing v1.0</textarea> -->
+    <div id="editor-container">
+      <div id="editor"></div>
+    </div>
 
     <div id="canvasContainer">
       <div id="variable-form">
