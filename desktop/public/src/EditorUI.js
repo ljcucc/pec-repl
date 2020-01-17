@@ -173,12 +173,11 @@ function ResizeHandle(dom, split_left, split_right, mobile_enable) {
   });
 }
 
-function Canvas(container, events) {
+function Canvas(container, onload) {
   var update = false;
   var dragPosition = [0, 0], zooming = 1, dragable = false;
   var lastPosition = null;
   var graphicsProcess;
-  var events = {};
 
   var sketch = new p5(function (sketch) {
     sketch.setup = () => {
@@ -190,6 +189,8 @@ function Canvas(container, events) {
       graphicsProcess = new GraphicsProcess(sketch.createGraphics(window.innerWidth, h));
 
       rerenderingCanvas();
+
+      onload(sketch);
     }
 
     sketch.draw = () => {

@@ -2,7 +2,9 @@
   var file_id = uuidv4();
   var openDialogState = "open";
 
-  window.canvas = new Canvas(document.querySelector("#canvasContainer"), {});
+  window.canvas = new Canvas(document.querySelector("#canvasContainer"), ()=>{
+    
+  });
   var codes = new Codes(document.querySelector("#code_edit"), "", {
     lineNumbers: true,
     width: 300,
