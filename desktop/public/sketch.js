@@ -19,18 +19,60 @@
   window.resizeHandle = resizeHandle;
 
   var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"));
-  var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"), e => {
+  var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"),
+  [
+    {
+      icon:"folder_open",
+      title:"Open",
+      id:"open"
+    },
+    {
+      icon:"description",
+      title:"New",
+      id:"new_script"
+    },
+    {
+      icon: "save",
+      title: "Save",
+      id:"save"
+    },
+    {
+      icon: "save",
+      title: "Save as",
+      id:"save_as"
+    },
+    {
+      icon: "delete",
+      title: "Delete",
+      id:"delete"
+    },
+    {
+      icon: "extension",
+      title: "Plug-ins",
+      id:"plugins"
+    },
+    {
+      icon:"settings",
+      title:"Settings",
+      id:"settings"
+    }
+  ], e => {
     switch (e) {
       case "open":
         openDialogState = "open";
-        openfileDialog.open();
+        openfileDialog.open("open");
         break;
       case "save":
         saveFile(file_id, codes.get());
         break;
       case "delete":
         openDialogState = "delete";
-        openfileDialog.open();
+        openfileDialog.open("delete");
+        break;
+      case "new_script":
+        setTimeout(()=>{
+          codes.set("");
+        },300);
         break;
     }
   });

@@ -107,11 +107,12 @@
     </div>
 
     <div id="top_optoins" style="display:flex; flex-direction: row;align-items: center;">
-      <span v-for="option in options">
+      <span v-for="option in options" v-bind:class="{'show-in-desktop':option.desktop_only}">
         <div v-if=" 'type' in option && option.type == 'button'" class="material-icons round-button"
           style="color:var(--background-text-color); margin-right: 8px;"
-          v-bind:title="('title' in option ? option.title : '')"
-          v-on:click="('onclick' in option ? option.onclick() : ()=>{})">{{option.icon}}</div>
+          v-bind:title="('title' in option ? option.title : '' )"
+          v-on:click="('onclick' in option ? option.onclick() : ()=>{})"
+          >{{option.icon}}</div>
         <div v-if=" 'type' in option && option.type == 'slide'"
           style="width: 10px;height: 30px;border-left:1px solid rgba(0,0,0,.35);"></div>
       </span>
@@ -172,7 +173,7 @@
       </div>
       <div class="script-list--container">
         <div class="script-list--item no-select" v-for="(item,index) in scripts" v-on:click="open(index)">
-          <i class="material-icons" style="margin-right: 16px;">description</i>
+          <i class="material-icons" style="margin-right: 16px;color:#666666;">description</i>
           <div style="display:flex; flex-direction: column;">
             <span style="font-family: monospace;">{{item.val.title}}</span>
             <span style="font-family: monospace;font-size:14px; color:rgba(0,0,0,0.35);">{{item.val.date}}</span>

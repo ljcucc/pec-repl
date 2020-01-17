@@ -275,7 +275,7 @@ function Canvas(container, onload) {
 
   this.resize = function (width, height, dontRedraw) {
     console.log(width);
-    sketch.resizeCanvas(width, height - 60);
+    sketch.resizeCanvas(width - 24, height - 60);
     // graphicsProcess.canvas.resizeCanvas(width,height)
     // $("#canvasContainer").css("marginLeft", window.innerWidth - width)
     if (!dontRedraw) update = true;
@@ -303,7 +303,7 @@ function Canvas(container, onload) {
 
 function Codes(dom, id, config) {
   var codeMirror = CodeMirror.fromTextArea(document.querySelector("#code_edit"), config);
-  codeMirror.setSize(0, window.innerHeight - 60 - 100);
+  codeMirror.setSize(0, window.innerHeight - 60);
 
   $("#runScript").click(function () {
     console.log(codeMirror.getValue());
@@ -370,6 +370,7 @@ function OptionBar(dom, targetButton) {
             type: "button",
             icon: "visibility",
             title: "View mode",
+            desktop_only:true,
             onclick: () => {
               window.canvas.setDragable(false);
             }
@@ -378,6 +379,7 @@ function OptionBar(dom, targetButton) {
             type: "button",
             icon: "open_with",
             title: "Move plant",
+            desktop_only:true,
             onclick: () => {
               window.canvas.setDragable(true);
             }
@@ -402,7 +404,7 @@ function OptionBar(dom, targetButton) {
   }
 }
 
-function MenuContainer(dom, listDomQuery, targetButton, callback) {
+function MenuContainer(dom, listDomQuery, targetButton, menuItems ,callback) {
   dom.hide();
   targetButton.click(e => {
     dom.fadeIn(200);
@@ -416,43 +418,7 @@ function MenuContainer(dom, listDomQuery, targetButton, callback) {
   var menuLists = new Vue({
     el: listDomQuery,
     data: {
-      list: [
-        {
-          icon:"folder_open",
-          title:"Open",
-          id:"open"
-        },
-        {
-          icon:"description",
-          title:"New",
-          id:"new_script"
-        },
-        {
-          icon: "save",
-          title: "Save",
-          id:"save"
-        },
-        {
-          icon: "save",
-          title: "Save as",
-          id:"save_as"
-        },
-        {
-          icon: "delete",
-          title: "Delete",
-          id:"delete"
-        },
-        {
-          icon: "extension",
-          title: "Plug-ins",
-          id:"plugins"
-        },
-        {
-          icon:"settings",
-          title:"Settings",
-          id:"settings"
-        }
-      ]
+      list: menuItems
     },
     methods:{
       open:(index)=>{
@@ -468,7 +434,7 @@ function OpenFileDialog(el,load,callback){
   var app = new Vue({
     el,
     data:{
-      title: "Select a file...",
+      title: "Select a file to",
       scripts:[
         "filename.lisp"
       ],
@@ -483,7 +449,8 @@ function OpenFileDialog(el,load,callback){
     }
   });
 
-  this.open = ()=>{
+  this.open = (action_name)=>{
+    app.title =  "Select a file to "+action_name+"..."
     app.show = true;
   }
 
