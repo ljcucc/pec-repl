@@ -732,7 +732,7 @@ body {
 }
 
 .commands.show{
-  height: 500px;
+  height: 400px;
   /* display:block; */
 }
 
@@ -764,6 +764,6 @@ body {
   right:0;
   z-index: 80;
 
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); */
 }

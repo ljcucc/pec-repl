@@ -556,20 +556,34 @@ function ShellUI() {
     if (state) {
       $(".shell").removeClass("hide");
     } else {
-      $(".shell").addClass("hide");
-      $(".commands").removeClass("show");
-      setTimeout(() => {
-        $(".shell-background").fadeOut(300);
-      }, 0)
-
+      hide(true)
     }
   }
 
-  $("#open_commands").click(() => {
-    $(".commands").addClass("show");
-    setTimeout(() => {
-      $(".shell-background").fadeIn(300);
-    }, 0)
+  function hide(full_hide) {
+    if (full_hide) $(".shell").addClass("hide");
+    $(".commands").removeClass("show");
+    $(".shell-background").fadeOut(300);
+    $(".shell_launcher_icon").html("trip_origin");
+  }
 
+  $("#open_commands").click(() => {
+    if ($(".commands").hasClass("show")) {
+      setTimeout(() => {
+        hide()
+      }, 1)
+
+    } else {
+      setTimeout(() => {
+        $(".commands").addClass("show");
+        $(".shell-background").fadeIn(300);
+        $(".shell_launcher_icon").html("arrow_back")
+      }, 1);
+    }
+
+  });
+
+  $(".shell-background").mousedown(()=>{
+    hide()
   })
 }
