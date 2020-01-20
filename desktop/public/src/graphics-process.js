@@ -8,12 +8,12 @@ function GraphicsProcess(canvas) {
     this.canvas = canvas;
 
     this.render = () => {
-        canvas.clear();
-        for(var index in canvasPool){
-            canvasPool[index].render();
-        }
+        // canvas.clear();
+        // for(var index in canvasPool){
+        //     canvasPool[index].render();
+        // }
         
-        writer.render();
+        // writer.render();
 
         return canvas;
     }
@@ -36,9 +36,9 @@ function GraphicsProcess(canvas) {
         }
 
         this.write = (text) => {
-            this.texts.push(text);
-            console.log(this.texts);
-            window.canvas.rerenderingCanvas();
+            // this.texts.push(text);
+            // console.log(this.texts);
+            // window.canvas.rerenderingCanvas();
         }
     }
 
@@ -71,8 +71,9 @@ function GraphicsProcess(canvas) {
     }
 
     this.reset = () => {
-        canvasPool = [];
-        writer.texts = [];
+        // canvasPool = [];
+        // writer.texts = [];
+        this.canvas.clear()
         window.canvas.rerenderingCanvas();
     }
 }

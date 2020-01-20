@@ -292,7 +292,7 @@ body {
 
 .options_bar {
   height: 100%;
-  width: 70px;
+  width: 120px;
   right: 0;
   top: 0;
   bottom: 0;
@@ -308,7 +308,7 @@ body {
 }
 
 .options_bar.hide {
-  margin-right: -90px;
+  margin-right: -150px;
   transition: all 0.2s cubic-bezier(0.4, 0.0, 1, 1);
 }
 
@@ -369,15 +369,16 @@ body {
   border-radius: 10px;
   background: transparent;
   border: none;
-  transition: all 0.3s;
+  transition: all 0.25s;
   margin: 8px;
   color: rgba(0, 0, 0, .65);
   outline: none;
+  cursor: pointer;
   /* border:1px solid rgba(0,0,0,.45); */
 }
 
 .menu-div-row__item:hover {
-  background: rgba(0, 0, 0, .35);
+  background: rgba(0, 0, 0, .25);
 }
 
 .menu-div.hide {
@@ -574,3 +575,106 @@ body {
 .ace-tm{
   background: transparent;
 }   
+
+.form-dialog-container{
+  position: fixed;
+  background: rgba(0, 0, 0, .35);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+}
+
+.form-dialog{
+  position: fixed;
+  background: white;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 500px;
+  width: 500px;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
+  overflow-y: scroll;
+}
+
+.dialog-heading1 {
+  font-family: 'Product Sans',Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  margin-left: 8px;
+}
+
+.form-text-field{
+  outline:none;
+  background: transparent;
+  border:none;
+  border-bottom: 1px solid black;
+  font-size: 16px;
+  padding :8px 0;
+  font-family:Arial, Helvetica, sans-serif;
+  border-radius: 0px;
+  font-size: 16px;
+  width: 300px;
+}
+
+.form-text-field:focus{
+  border-bottom: 2px solid black;
+  padding-bottom: 7px;
+}
+
+.form-text-field::placeholder{
+  color:rgba(0,0,0,.35);
+}
+
+.form-text-area{
+  outline:none;
+  background: transparent;
+  border:none;
+  border-bottom: 1px solid black;
+  font-size: 16px;
+  padding :8px 0;
+  font-family: monospace;
+  border-radius: 0px;
+  font-size: 16px;
+  width: 300px;
+  height: 100px;
+}
+
+.form-text-area:focus{
+  border-bottom: 2px solid black;
+  padding-bottom: 7px;
+}
+
+.form-text-area::placeholder{
+  color:rgba(0,0,0,.35);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.send-button{
+  background: #1e88e5;
+  color: white;
+  padding:12px 16px;
+  border:none;
+  outline:none;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.send-button:hover{
+  background:#1565c0;
+}
+
+.send-button:focus{
+  background:#0d47a1;
+}

@@ -235,7 +235,7 @@ function Canvas(container, onload) {
 
     }
 
-    console.log(sketch.width)
+    // console.log(sketch.width)
 
     const padding = 15;
     for (let w = 1; w < sketch.width + (dragPosition[0] > 0 ? dragPosition[0] : 0) * 1; w += padding) {
@@ -274,7 +274,7 @@ function Canvas(container, onload) {
   }
 
   this.resize = function (width, height, dontRedraw) {
-    console.log(width);
+    // console.log(width);
     sketch.resizeCanvas(width - 24, height - 60);
     // graphicsProcess.canvas.resizeCanvas(width,height)
     // $("#canvasContainer").css("marginLeft", window.innerWidth - width)
@@ -330,20 +330,41 @@ function Codes(dom, id, config) {
     return $(".CodeMirror").width();
   }
 
-  this.get = function(){
+  this.get = function () {
     return codeMirror.getValue();
   }
 
-  this.set = function(code){
+  this.set = function (code) {
     return codeMirror.setValue(code);
   }
 }
 
-function OptionBar(dom, targetButton) {
-  targetButton.click(toggle);
+function OptionBar(dom, targetButton, optionAdapter) {
+  var openingAnimation = false;
+  targetButton.click(toggle).mouseover(e => {
+    if (!desktopProcess) return;
+    if (openingAnimation) return;
+    openingAnimation = true;
+    setTimeout(() => {
+      openingAnimation = false;
+    }, 300);
+    console.log("over!!")
+    setState(true);
+  })
+  $(".options_bar").mouseleave(e => {
+    if (!desktopProcess) return;
+    if (openingAnimation) return;
+    openingAnimation = true;
+    setTimeout(() => {
+      openingAnimation = false;
+    }, 500);
+    console.log("options_bar mouseout")
+    setState(false)
+  })
   $("#closeOptionBar").click(toggle)
 
   function toggle() {
+    // console.log("toggling option bar")
     if (dom.hasClass("hide")) {
       dom.removeClass("hide");
     } else {
@@ -351,60 +372,58 @@ function OptionBar(dom, targetButton) {
     }
   }
 
-  var topOptions = new TopOptions("#top_optoins")
+  function setState(state) {
+    if (state) {
+      dom.removeClass("hide");
+    } else {
+      dom.addClass("hide");
+    }
+  }
+
+  var topOptions = new TopOptions("#top_optoins"),
+    commandList = new CommandList("#command_list")
 
   function TopOptions(el, options) {
     var vueContainer = new Vue({
       el,
       data: {
-        options: [
-          {
-            type: "button",
-            icon: "code",
-            title: "Toogle Commander",
-            onclick: () => {
-              window.resizeHandle.toggleCodeEditor();
-            }
-          },
-          {
-            type: "button",
-            icon: "visibility",
-            title: "View mode",
-            desktop_only:true,
-            onclick: () => {
-              window.canvas.setDragable(false);
-            }
-          },
-          {
-            type: "button",
-            icon: "open_with",
-            title: "Move plant",
-            desktop_only:true,
-            onclick: () => {
-              window.canvas.setDragable(true);
-            }
-          },
-          {
-            type: "slide"
-          },
-          {
-            type: "button",
-            icon: "help_outline",
-            title: "Help",
-            onclick: () => {
-              window.open("https://sites.google.com/view/power-editing")
-            }
-          }
-        ]
+        options: optionAdapter()
       },
       mounted: () => {
         // vueContainer.options = options
       }
     })
   }
+
+  function CommandList(el) {
+    var vueContainer = new Vue({
+      el,
+      data: {},
+      mounted: () => {
+        keyboardInit()
+      }
+    });
+
+    function keyboardInit() {
+      var laststate = false;
+      window.addEventListener("keydown", e => {
+        if (laststate || !e.altKey) return;
+        laststate = true
+        console.log(e)
+        setState(true)
+      })
+
+      window.addEventListener("keyup", e => {
+        if (!laststate || e.key != "Alt") return;
+        laststate = false
+        console.log(e)
+        setState(false)
+      })
+    }
+  }
 }
 
-function MenuContainer(dom, listDomQuery, targetButton, menuItems ,callback) {
+function MenuContainer(dom, listDomQuery, targetButton, menuItems, callback) {
   dom.hide();
   targetButton.click(e => {
     dom.fadeIn(200);
@@ -420,8 +439,8 @@ function MenuContainer(dom, listDomQuery, targetButton, menuItems ,callback) {
     data: {
       list: menuItems
     },
-    methods:{
-      open:(index)=>{
+    methods: {
+      open: (index) => {
         callback(menuLists.list[index].id);
         $(".menu-div").addClass("hide");
         dom.fadeOut(200);
@@ -430,39 +449,39 @@ function MenuContainer(dom, listDomQuery, targetButton, menuItems ,callback) {
   })
 }
 
-function OpenFileDialog(el,load,callback){
+function OpenFileDialog(el, load, callback) {
   var app = new Vue({
     el,
-    data:{
+    data: {
       title: "Select a file to",
-      scripts:[
+      scripts: [
         "filename.lisp"
       ],
-      show:false
+      show: false
     },
-    mounted:reload,
-    methods:{
-      open:(index)=>{
+    mounted: reload,
+    methods: {
+      open: (index) => {
         callback(app.scripts[index]);
         app.show = false
       }
     }
   });
 
-  this.open = (action_name)=>{
-    app.title =  "Select a file to "+action_name+"..."
+  this.open = (action_name) => {
+    app.title = "Select a file to " + action_name + "..."
     app.show = true;
   }
 
-  this.reload = ()=>{
+  this.reload = () => {
     reload();
   }
 
-  async function reload(){
+  async function reload() {
     var result = await load();
     console.log(result);
     var filelist = [];
-    for(var key in result){
+    for (var key in result) {
       filelist.push({
         val: result[key],
         id: key
@@ -473,32 +492,43 @@ function OpenFileDialog(el,load,callback){
   }
 }
 
-function FilenameBox(el,callback){
+function FilenameBox(el, callback) {
   var app = new Vue({
     el,
-    data:{
+    data: {
       edit: false,
-      filename:"untitled"
+      filename: "untitled"
     },
-    updated:()=>{
+    updated: () => {
       callback(app.filename)
     }
   });
 
-  this.getName = ()=>{
+  this.getName = () => {
     return app.filename;
   }
 
-  this.setName = (name)=>{
+  this.setName = (name) => {
     app.filename = name;
   }
 }
 
-function VariableForm(el) {
+function DialogForm(el,title, options) {
   var vueCom = new Vue({
     el,
     data: {
-      show: false
+      show: false,
+      title,
+      options
     }
   });
+
+  this.set = function(title, options){
+    vueCom.title = title
+    vueCom.options = options
+  }
+
+  this.show = ()=>{
+    vueCom.show = true
+  }
 }

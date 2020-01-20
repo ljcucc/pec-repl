@@ -2,8 +2,8 @@
   var file_id = uuidv4();
   var openDialogState = "open";
 
-  window.canvas = new Canvas(document.querySelector("#canvasContainer"), ()=>{
-    
+  window.canvas = new Canvas(document.querySelector("#canvasContainer"), () => {
+
   });
   var codes = new Codes(document.querySelector("#code_edit"), "", {
     lineNumbers: true,
@@ -18,8 +18,8 @@
   var resizeHandle = new ResizeHandle($(".resize-handler"), codes, canvas, true);
   window.resizeHandle = resizeHandle;
 
-  var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"), ()=>{
-    const options =  [
+  var optionBar = new OptionBar($(".options_bar"), $("#expand_option_bar"), () => {
+    return [
       {
         type: "button",
         icon: "code",
@@ -32,7 +32,7 @@
         type: "button",
         icon: "visibility",
         title: "View mode",
-        desktop_only:true,
+        desktop_only: true,
         onclick: () => {
           window.canvas.setDragable(false);
         }
@@ -41,7 +41,7 @@
         type: "button",
         icon: "open_with",
         title: "Move plant",
-        desktop_only:true,
+        desktop_only: true,
         onclick: () => {
           window.canvas.setDragable(true);
         }
@@ -54,70 +54,69 @@
         icon: "help_outline",
         title: "Help",
         onclick: () => {
-          // window.open("https://sites.google.com/view/power-editing")
+          window.open("https://sites.google.com/view/power-editing")
         }
       }
-    ];
-
-    return options;
+    ]
   });
   var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"),
-  [
-    {
-      icon: "extension",
-      title: "Plug-ins",
-      id:"plugins"
-    },
-    {
-      icon:"settings",
-      title:"Settings",
-      id:"settings"
-    }
-  ], e => {
-    switch (e) {
-      case "open":
-        openDialogState = "open";
-        openfileDialog.open("open");
-        break;
-      case "save":
-        saveFile(file_id, codes.get());
-        break;
-      case "delete":
-        openDialogState = "delete";
-        openfileDialog.open("delete");
-        break;
-      case "new_script":
-        setTimeout(()=>{
-          codes.set("");
-        },300);
-        break;
-    }
-  });
-  var dialogForm = new DialogForm("#form_dialog", "Add command", []);
-
-  dialogForm.set("Add command", [
-    {
-      title: "Action Name",
-      id: "action-name",
-      type: "text-input",
-      value:""
-    },
-    {
-      title: "Variables (split with ',')",
-      id: "variables",
-      type: "text-input",
-      value:""
-    },
-    {
-      title: "Codes",
-      id: "variabkes",
-      type: "code",
-      value:""
-    }
-  ]);
-
-  dialogForm.show();
-
+    [
+      {
+        icon: "folder_open",
+        title: "Open",
+        id: "open"
+      },
+      {
+        icon: "description",
+        title: "New",
+        id: "new_script"
+      },
+      {
+        icon: "save",
+        title: "Save",
+        id: "save"
+      },
+      {
+        icon: "save",
+        title: "Save as",
+        id: "save_as"
+      },
+      {
+        icon: "delete",
+        title: "Delete",
+        id: "delete"
+      },
+      {
+        icon: "extension",
+        title: "Plug-ins",
+        id: "plugins"
+      },
+      {
+        icon: "settings",
+        title: "Settings",
+        id: "settings"
+      }
+    ], e => {
+      switch (e) {
+        case "open":
+          openDialogState = "open";
+          openfileDialog.open("open");
+          break;
+        case "save":
+          saveFile(file_id, codes.get());
+          break;
+        case "delete":
+          openDialogState = "delete";
+          openfileDialog.open("delete");
+          break;
+        case "new_script":
+          setTimeout(() => {
+            codes.set("");
+          }, 300);
+          break;
+      }
+    });
+  var variableForm = new VariableForm("#variable-form");
   var openfileDialog = new OpenFileDialog("#open_file", async e => {
     var scripts = this.canvas.sketch.getItem("script_list") || {};
     console.log(scripts);
@@ -130,7 +129,7 @@
       filenameBox.setName(e.val.title);
       file_id = e.id;
       codes.set(await this.canvas.sketch.getItem('script:' + file_id))
-    }else{
+    } else {
       console.log("deleting...");
       deleteFile(file_id);
     }
@@ -160,7 +159,7 @@
     updateFileSelector();
   }
 
-  async function deleteFile(id){
+  async function deleteFile(id) {
     var list = await this.canvas.sketch.getItem("script_list") || {};
     if (id in list) {
       this.canvas.sketch.removeItem('script:' + id);
@@ -170,7 +169,7 @@
     updateFileSelector();
   }
 
-  function updateFileSelector(){
+  function updateFileSelector() {
     openfileDialog.reload();
   }
 

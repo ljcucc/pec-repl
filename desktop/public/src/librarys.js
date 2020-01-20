@@ -200,9 +200,18 @@ const commonLib = {
     DOMs = {};
   },
 
-  route: (code, context) =>{
+  rect: (code, context) => {
     var e = context.interpret(code);
     e = replaceArray(e);
+
+    this.canvas.getGraphicsProcess().canvas.rect(e[0],e[1],e[2],e[3])
+  },
+
+  circle: (code, context) => {
+    var e = context.interpret(code);
+    e = replaceArray(e);
+
+    this.canvas.getGraphicsProcess().canvas.rect(e[0],e[1],e[2],e[3])
   }
 };
 
