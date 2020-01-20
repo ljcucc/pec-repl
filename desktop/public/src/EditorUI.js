@@ -321,8 +321,15 @@ function Codes(dom, id, config) {
 
     if (width > 80) {
       $("#runScript").removeClass("hide");
+      //Commander opened
+      for(var index in commanderOpenCallbacks){
+        commanderOpenCallbacks[index]();
+      }
     } else {
       $("#runScript").addClass("hide");
+      for(var index in commanderCloseCallbacks){
+        commanderCloseCallbacks[index]();
+      }
     }
   }
 
@@ -336,6 +343,17 @@ function Codes(dom, id, config) {
 
   this.set = function (code) {
     return codeMirror.setValue(code);
+  }
+
+  var commanderOpenCallbacks = [],
+  commanderCloseCallbacks = [];
+
+  this.onCommanderOpen = (callback)=>{
+    commanderOpenCallbacks.push(callback);
+  }
+
+  this.onCommanderClose = (callback) => {
+    commanderCloseCallbacks.push(callback);
   }
 }
 
@@ -531,4 +549,21 @@ function DialogForm(el,title, options) {
   this.show = ()=>{
     vueCom.show = true
   }
+}
+
+function ShellUI(){
+  this.setAppearState = (state)=>{
+    if(state){
+      $(".shell").removeClass("hide");
+    }else{
+      $(".shell").addClass("hide");
+      $(".commands").removeClass("show");
+      $(".shell-background").fadeOut(300);
+    }
+  }
+
+  $("#open_commands").click(()=>{
+    $(".commands").addClass("show")
+    $(".shell-background").fadeIn(300);
+  })
 }

@@ -81,23 +81,24 @@
     </script>
   </div>
   <div class="nav-bar">
-    <button id="nav-bar-menu" class="round-button" title="Menu (Alt + Q)">
+    <!-- <button id="nav-bar-menu" class="round-button" title="Menu (Alt + Q)">
       <svg style="margin-top:1px;" focusable="false" viewBox="0 0 24 24">
         <path style="fill:var(--background-text-color);"
           d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z">
         </path>
       </svg>
-    </button>
+    </button> -->
     <div class="nav-bar-title" id="filenameBox" style="display:flex;flex-direction: row;align-items: center;">
-      <div style="display:flex;flex-direction: row;align-items: center;" v-if="!edit">
-        Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span> <button v-on:click="edit = true"
+      <div style="display:flex;flex-direction: row;align-items: center;margin-left:16px" v-if="!edit">
+        Power Editing <span style="color:rgba(0,0,0,.35)">- <i>ßeta</i></span>
+        <!-- <button v-on:click="edit = true"
           style="margin-left:16px;color:rgba(0,0,0,0.65);" class="material-icons round-button"
-          title="rename">short_text</button>
+          title="rename">short_text</button> -->
       </div>
-      <div style="display:flex;flex-direction: row;align-items: center;" v-if="edit">
+      <!-- <div style="display:flex;flex-direction: row;align-items: center;" v-if="edit">
         <input class="rename-input" v-model="filename" /> <button style="margin-left:16px;color:rgba(0,0,0,0.65);"
           class="material-icons round-button" title="rename" v-on:click="edit = false">done</button>
-      </div>
+      </div> -->
     </div>
     <div class="nav-bar-spacer">
     </div>
@@ -137,6 +138,23 @@
       </button>
       <div class="splitLine"></div>
       <div class="resize-handler" draggable="false"></div>
+
+      <div style="width:100%;position: fixed;bottom:0;display:flex;flex-direction: column;align-items: center;">
+        
+        <div class="shell">
+          <div style="display:flex;flex-direction: row;align-items: center;">
+            <div id="open_commands" style="margin:8px;padding:10px;color:rgba(0,0,0,0.75)"
+              class="material-icons round-button">
+              trip_origin
+            </div>
+            <input class="shell-input" placeholder="Type a command name..." />
+          </div>
+          <div class="commands"></div>
+        </div>
+
+        <div class="shell-background" style="display:none;"></div>
+      </div>
+
     </div>
 
     <div class="options_bar hide">
@@ -165,7 +183,7 @@
     </div>
   </div>
 
-  <div id="menuContainer">
+  <!-- <div id="menuContainer">
     <div class="menu-background"></div>
     <div class="menu-div hide">
       <div class="menu-div-row">
@@ -176,7 +194,7 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 
   <div class="floating-dialog--container" id="open_file" v-if="show">
     <div class="floating-dialog">
@@ -214,8 +232,10 @@
         <div class="dialog-heading1" style="margin-bottom: 16px">{{title}}</div>
         <div style="padding:8px">
           <div v-for="option in options">
-            <input v-if="option.type == 'text-input'" class="form-text-field" style="margin-bottom:16px;" v-model="option.value" v-bind:placeholder="option.title" type="text" />
-            <textarea v-if="option.type == 'code'" class="form-text-area" v-model="option.value" v-bind:placeholder="option.title" ></textarea>
+            <input v-if="option.type == 'text-input'" class="form-text-field" style="margin-bottom:16px;"
+              v-model="option.value" v-bind:placeholder="option.title" type="text" />
+            <textarea v-if="option.type == 'code'" class="form-text-area" v-model="option.value"
+              v-bind:placeholder="option.title"></textarea>
           </div>
           <!-- <button class="send-button" style="margin-top: 16px;">done</button> -->
         </div>

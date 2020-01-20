@@ -116,7 +116,7 @@
           break;
       }
     });
-  var variableForm = new VariableForm("#variable-form");
+  var variableForm = new DialogForm("#variable-form");
   var openfileDialog = new OpenFileDialog("#open_file", async e => {
     var scripts = this.canvas.sketch.getItem("script_list") || {};
     console.log(scripts);

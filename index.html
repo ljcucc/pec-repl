@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/material-darker.css">
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/neo.css">
   <link rel="stylesheet" href="./desktop/public/src/lib/codemirror-5.49.2/theme/monokai.css">
-  
+
   <link rel="stylesheet" href="./desktop/public/style.css">
 
   <!-- Vue.js -->
@@ -111,8 +111,7 @@
         <div v-if=" 'type' in option && option.type == 'button'" class="material-icons round-button"
           style="color:var(--background-text-color); margin-right: 8px;"
           v-bind:title="('title' in option ? option.title : '' )"
-          v-on:click="('onclick' in option ? option.onclick() : ()=>{})"
-          >{{option.icon}}</div>
+          v-on:click="('onclick' in option ? option.onclick() : ()=>{})">{{option.icon}}</div>
         <div v-if=" 'type' in option && option.type == 'slide'"
           style="width: 10px;height: 30px;border-left:1px solid rgba(0,0,0,.35);"></div>
       </span>
@@ -145,8 +144,12 @@
     </div>
 
     <div class="options_bar hide">
-      <button class="material-icons round-button" style="color:var(--background-text-color)" title="Fold options"
-        id="closeOptionBar">keyboard_arrow_right</button>
+
+      <div style="width:100%; text-align:right;">
+        <button style="margin-right: 8px;" class="material-icons round-button" style="color:var(--background-text-color)" title="Fold options"
+          id="closeOptionBar">keyboard_arrow_right</button>
+      </div>
+      <div id="command_list"></div>
     </div>
   </div>
 

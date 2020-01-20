@@ -15,6 +15,16 @@
     tabSize: 2
   });
 
+  codes.onCommanderOpen(()=>{
+    console.log("openning")
+    new ShellUI().setAppearState(false);
+  })
+
+  codes.onCommanderClose(()=>{
+    console.log("close")
+    new ShellUI().setAppearState(true);
+  })
+
   var resizeHandle = new ResizeHandle($(".resize-handler"), codes, canvas, true);
   window.resizeHandle = resizeHandle;
 
@@ -48,51 +58,43 @@
       },
       {
         type: "slide"
-      },
-      {
-        type: "button",
-        icon: "help_outline",
-        title: "Help",
-        onclick: () => {
-          // window.open("https://sites.google.com/view/power-editing")
-        }
       }
     ];
 
     return options;
   });
-  var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"),
-  [
-    {
-      icon: "extension",
-      title: "Plug-ins",
-      id:"plugins"
-    },
-    {
-      icon:"settings",
-      title:"Settings",
-      id:"settings"
-    }
-  ], e => {
-    switch (e) {
-      case "open":
-        openDialogState = "open";
-        openfileDialog.open("open");
-        break;
-      case "save":
-        saveFile(file_id, codes.get());
-        break;
-      case "delete":
-        openDialogState = "delete";
-        openfileDialog.open("delete");
-        break;
-      case "new_script":
-        setTimeout(()=>{
-          codes.set("");
-        },300);
-        break;
-    }
-  });
+  // var menuContainer = new MenuContainer($("#menuContainer"), ".menu-div", $("#nav-bar-menu"),
+  // [
+  //   {
+  //     icon: "extension",
+  //     title: "Plug-ins",
+  //     id:"plugins"
+  //   },
+  //   {
+  //     icon:"settings",
+  //     title:"Settings",
+  //     id:"settings"
+  //   }
+  // ], e => {
+  //   switch (e) {
+  //     case "open":
+  //       openDialogState = "open";
+  //       openfileDialog.open("open");
+  //       break;
+  //     case "save":
+  //       saveFile(file_id, codes.get());
+  //       break;
+  //     case "delete":
+  //       openDialogState = "delete";
+  //       openfileDialog.open("delete");
+  //       break;
+  //     case "new_script":
+  //       setTimeout(()=>{
+  //         codes.set("");
+  //       },300);
+  //       break;
+  //   }
+  // });
   var dialogForm = new DialogForm("#form_dialog", "Add command", []);
 
   dialogForm.set("Add command", [
@@ -116,7 +118,7 @@
     }
   ]);
 
-  dialogForm.show();
+  // dialogForm.show();
 
   var openfileDialog = new OpenFileDialog("#open_file", async e => {
     var scripts = this.canvas.sketch.getItem("script_list") || {};
@@ -136,14 +138,14 @@
     }
   });
 
-  var filenameBox = new FilenameBox("#filenameBox", async e => {
-    var list = await this.canvas.sketch.getItem("script_list") || {};
-    if (file_id in list) {
-      list[file_id].title = e;
-      this.canvas.sketch.storeItem('script_list', list);
-      updateFileSelector();
-    }
-  });
+  // var filenameBox = new FilenameBox("#filenameBox", async e => {
+  //   var list = await this.canvas.sketch.getItem("script_list") || {};
+  //   if (file_id in list) {
+  //     list[file_id].title = e;
+  //     this.canvas.sketch.storeItem('script_list', list);
+  //     updateFileSelector();
+  //   }
+  // });
 
   async function saveFile(id, code) {
     var list = await this.canvas.sketch.getItem("script_list") || {};
