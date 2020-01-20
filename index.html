@@ -141,6 +141,22 @@
       </button>
       <div class="splitLine"></div>
       <div class="resize-handler" draggable="false"></div>
+
+      <div style="width:100vw;position: fixed;bottom:0;left:0;right:0;display:flex;flex-direction: column;align-items: center;">
+        
+        <div class="shell">
+          <div style="display:flex;flex-direction: row;align-items: center;">
+            <div id="open_commands" style="margin:8px;padding:10px;color:rgba(0,0,0,0.75)"
+              class="material-icons round-button">
+              trip_origin
+            </div>
+            <input class="shell-input" placeholder="Type a command name..." />
+          </div>
+          <div class="commands"></div>
+        </div>
+
+        <div class="shell-background" style="display:none;"></div>
+      </div>
     </div>
 
     <div class="options_bar hide">

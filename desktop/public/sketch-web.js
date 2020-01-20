@@ -15,6 +15,16 @@
     tabSize: 2
   });
 
+  codes.onCommanderOpen(()=>{
+    console.log("openning")
+    new ShellUI().setAppearState(false);
+  })
+
+  codes.onCommanderClose(()=>{
+    console.log("close")
+    new ShellUI().setAppearState(true);
+  })
+
   var resizeHandle = new ResizeHandle($(".resize-handler"), codes, canvas, true);
   window.resizeHandle = resizeHandle;
 

@@ -322,12 +322,12 @@ function Codes(dom, id, config) {
     if (width > 80) {
       $("#runScript").removeClass("hide");
       //Commander opened
-      for(var index in commanderOpenCallbacks){
+      for (var index in commanderOpenCallbacks) {
         commanderOpenCallbacks[index]();
       }
     } else {
       $("#runScript").addClass("hide");
-      for(var index in commanderCloseCallbacks){
+      for (var index in commanderCloseCallbacks) {
         commanderCloseCallbacks[index]();
       }
     }
@@ -346,9 +346,9 @@ function Codes(dom, id, config) {
   }
 
   var commanderOpenCallbacks = [],
-  commanderCloseCallbacks = [];
+    commanderCloseCallbacks = [];
 
-  this.onCommanderOpen = (callback)=>{
+  this.onCommanderOpen = (callback) => {
     commanderOpenCallbacks.push(callback);
   }
 
@@ -531,7 +531,7 @@ function FilenameBox(el, callback) {
   }
 }
 
-function DialogForm(el,title, options) {
+function DialogForm(el, title, options) {
   var vueCom = new Vue({
     el,
     data: {
@@ -541,29 +541,35 @@ function DialogForm(el,title, options) {
     }
   });
 
-  this.set = function(title, options){
+  this.set = function (title, options) {
     vueCom.title = title
     vueCom.options = options
   }
 
-  this.show = ()=>{
+  this.show = () => {
     vueCom.show = true
   }
 }
 
-function ShellUI(){
-  this.setAppearState = (state)=>{
-    if(state){
+function ShellUI() {
+  this.setAppearState = (state) => {
+    if (state) {
       $(".shell").removeClass("hide");
-    }else{
+    } else {
       $(".shell").addClass("hide");
       $(".commands").removeClass("show");
-      $(".shell-background").fadeOut(300);
+      setTimeout(() => {
+        $(".shell-background").fadeOut(300);
+      }, 0)
+
     }
   }
 
-  $("#open_commands").click(()=>{
-    $(".commands").addClass("show")
-    $(".shell-background").fadeIn(300);
+  $("#open_commands").click(() => {
+    $(".commands").addClass("show");
+    setTimeout(() => {
+      $(".shell-background").fadeIn(300);
+    }, 0)
+
   })
 }
