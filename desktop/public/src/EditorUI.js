@@ -567,23 +567,73 @@ function ShellUI() {
     $(".shell_launcher_icon").html("trip_origin");
   }
 
-  $("#open_commands").click(() => {
-    if ($(".commands").hasClass("show")) {
+  var setCommandListAppearState = (state)=>{
+    if (state) { //$(".commands").hasClass("show")
+      if(!$(".commands").hasClass("show")) return;
       setTimeout(() => {
         hide()
       }, 1)
 
     } else {
+      if($(".commands").hasClass("show")) return;
       setTimeout(() => {
         $(".commands").addClass("show");
         $(".shell-background").fadeIn(300);
         $(".shell_launcher_icon").html("arrow_back")
       }, 1);
     }
+  }
 
+  $(".shell-background").mousedown(() => {
+    hide()
   });
 
-  $(".shell-background").mousedown(()=>{
-    hide()
-  })
+  const commands = [
+    {
+      title: "select rect",
+      icon: "crop_free",
+      command: "(rect $x $y $width $height)",
+      parameter: ["$x", "$y", "$width", "$height"]
+    },
+    {
+      title: "select circle",
+      icon: "crop_free",
+      command: "(rect $x $y $width $height)",
+      parameter: ["$x", "$y", "$width", "$height"]
+    },
+    {
+      title: "select with draw",
+      icon: "crop_free",
+      command: "(rect $x $y $width $height)",
+      parameter: ["$x", "$y", "$width", "$height"]
+    }
+  ];
+
+  var vueCom = new Vue({
+    el: ".shell",
+    data: {
+      search: "",
+      commands: []
+    },
+    watch: {
+      search: () => {
+        console.log(vueCom.search)
+        if (vueCom.search.trim() == "") {
+          setCommandListAppearState(true);
+          vueCom.commands = commands
+        } else {
+          setCommandListAppearState(false);
+          vueCom.commands = commands.filter(command=>command.title.indexOf(vueCom.search)>-1).sort((a,b)=>
+            a.title.indexOf(search) - b.title.indexOf(search))
+        }
+      }
+    },
+    methods: {
+      open_commands: () => {
+        setCommandListAppearState($(".commands").hasClass("show"))
+      },
+    },
+    mounted: () => {
+    }
+  });
 }
