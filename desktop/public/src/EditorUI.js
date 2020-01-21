@@ -556,37 +556,9 @@ function ShellUI() {
     if (state) {
       $(".shell").removeClass("hide");
     } else {
-      hide(true)
+      vueCom.hide(true)
     }
   }
-
-  function hide(full_hide) {
-    if (full_hide) $(".shell").addClass("hide");
-    $(".commands").removeClass("show");
-    $(".shell-background").fadeOut(300);
-    $(".shell_launcher_icon").html("trip_origin");
-  }
-
-  var setCommandListAppearState = (state)=>{
-    if (state) { //$(".commands").hasClass("show")
-      if(!$(".commands").hasClass("show")) return;
-      setTimeout(() => {
-        hide()
-      }, 1)
-
-    } else {
-      if($(".commands").hasClass("show")) return;
-      setTimeout(() => {
-        $(".commands").addClass("show");
-        $(".shell-background").fadeIn(300);
-        $(".shell_launcher_icon").html("arrow_back")
-      }, 1);
-    }
-  }
-
-  $(".shell-background").mousedown(() => {
-    hide()
-  });
 
   const commands = [
     {
@@ -610,30 +582,69 @@ function ShellUI() {
   ];
 
   var vueCom = new Vue({
-    el: ".shell",
+    el: ".shell-container",
     data: {
       search: "",
-      commands: []
+      commands: [],
+      key:0
     },
     watch: {
       search: () => {
-        console.log(vueCom.search)
-        if (vueCom.search.trim() == "") {
-          setCommandListAppearState(true);
-          vueCom.commands = commands
-        } else {
-          setCommandListAppearState(false);
-          vueCom.commands = commands.filter(command=>command.title.indexOf(vueCom.search)>-1).sort((a,b)=>
-            a.title.indexOf(search) - b.title.indexOf(search))
-        }
+        vueCom.update_list(true)
       }
     },
     methods: {
       open_commands: () => {
-        setCommandListAppearState($(".commands").hasClass("show"))
+        vueCom.setCommandListAppearState($(".commands").hasClass("show"))
+        vueCom.update_list()
       },
+      update_list: (appear)=>{
+        console.log(vueCom.search)
+        if (vueCom.search.trim() == "") {
+          if(appear)vueCom.setCommandListAppearState(true);
+          vueCom.commands = commands
+        } else {
+          if(appear)vueCom.setCommandListAppearState(false);
+          vueCom.commands = commands.filter(command=>command.title.indexOf(vueCom.search.trim())>-1).sort((a,b)=>
+            a.title.indexOf(vueCom.search.trim()) - b.title.indexOf(vueCom.search.trim()))
+        }
+      },
+      hide(full_hide){
+        if (full_hide){
+          $(".shell").addClass("hide");
+          
+          console.log("full hide")
+        }
+        
+        $(".commands").removeClass("show");
+        $(".shell-background").fadeOut(300);
+        $(".shell_launcher_icon").html("trip_origin");
+      },
+      setCommandListAppearState(state){
+        if (state) { //$(".commands").hasClass("show")
+          if(!$(".commands").hasClass("show")) return;
+          console.log("closing commands")
+          setTimeout(() => {
+            vueCom.hide()
+          }, 1);
+    
+        } else {
+          if($(".commands").hasClass("show")) return;
+          console.log("opening commands")
+          setTimeout(() => {
+            $(".commands").addClass("show");
+            $(".shell-background").fadeIn(300);
+            $(".shell_launcher_icon").html("arrow_back")
+          }, 1);
+        }
+      }
     },
     mounted: () => {
+      $(".shell-background").mousedown(() => {
+        // hide()
+        console.log("hiding...")
+        vueCom.setCommandListAppearState(true)
+      });
     }
   });
 }
