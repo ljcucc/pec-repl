@@ -138,13 +138,13 @@
       </button>
       <div class="splitLine"></div>
       <div class="resize-handler" draggable="false"></div>
-
       <div style="width:100%;position: fixed;bottom:0;display:flex;flex-direction: column;align-items: center;">
 
-        <div class="shell">
-          <div class="shell-container">
+        <div class="shell-container">
+          <div class="shell">
+  
             <div style="display:flex;flex-direction: row;align-items: center;">
-              <div v-on:click="open_commands" style="margin:8px;padding:10px;color:var(--background-text-color2)"
+              <div id="open_commands_btn" style="margin:8px;padding:10px;color:var(--background-text-color2)"
                 class="material-icons round-button shell_launcher_icon">
                 trip_origin
               </div>
@@ -152,20 +152,15 @@
             </div>
             <!-- Command List -->
             <div class="commands">
-              <div class="menu-div-row">
-                <button v-for="i in commands" class="menu-div-row__item" v-for="open(i)">
-                  <i class="material-icons" style="font-size: 30px;">{{i.icon}}</i><br>
-                  {{i.title}}
-                </button>
+              <div class="menu-div-row" id="command_list">
+
               </div>
             </div>
           </div>
-
         </div>
-
+  
         <div class="shell-background" style="display:none;"></div>
       </div>
-
     </div>
 
     <div class="options_bar hide">

@@ -553,10 +553,13 @@ function DialogForm(el, title, options) {
 
 function ShellUI() {
   this.setAppearState = (state) => {
+    // vueCom.shell_appear = state;
     if (state) {
-      $(".shell").removeClass("hide");
+      if ($(".shell").css("margin-bottom") == "-100px") $(".shell").css({ "margin-bottom": 0 })
+      // vueCom.shell_appear = true
     } else {
-      vueCom.hide(true)
+      hide(true)
+      // recycle()
     }
   }
 
@@ -581,70 +584,82 @@ function ShellUI() {
     }
   ];
 
-  var vueCom = new Vue({
-    el: ".shell-container",
-    data: {
-      search: "",
-      commands: [],
-      key:0
-    },
-    watch: {
-      search: () => {
-        vueCom.update_list(true)
-      }
-    },
-    methods: {
-      open_commands: () => {
-        vueCom.setCommandListAppearState($(".commands").hasClass("show"))
-        vueCom.update_list()
-      },
-      update_list: (appear)=>{
-        console.log(vueCom.search)
-        if (vueCom.search.trim() == "") {
-          if(appear)vueCom.setCommandListAppearState(true);
-          vueCom.commands = commands
-        } else {
-          if(appear)vueCom.setCommandListAppearState(false);
-          vueCom.commands = commands.filter(command=>command.title.indexOf(vueCom.search.trim())>-1).sort((a,b)=>
-            a.title.indexOf(vueCom.search.trim()) - b.title.indexOf(vueCom.search.trim()))
-        }
-      },
-      hide(full_hide){
-        if (full_hide){
-          $(".shell").addClass("hide");
-          
-          console.log("full hide")
-        }
-        
-        $(".commands").removeClass("show");
-        $(".shell-background").fadeOut(300);
-        $(".shell_launcher_icon").html("trip_origin");
-      },
-      setCommandListAppearState(state){
-        if (state) { //$(".commands").hasClass("show")
-          if(!$(".commands").hasClass("show")) return;
-          console.log("closing commands")
-          setTimeout(() => {
-            vueCom.hide()
-          }, 1);
-    
-        } else {
-          if($(".commands").hasClass("show")) return;
-          console.log("opening commands")
-          setTimeout(() => {
-            $(".commands").addClass("show");
-            $(".shell-background").fadeIn(300);
-            $(".shell_launcher_icon").html("arrow_back")
-          }, 1);
-        }
-      }
-    },
-    mounted: () => {
-      $(".shell-background").mousedown(() => {
-        // hide()
-        console.log("hiding...")
-        vueCom.setCommandListAppearState(true)
-      });
+  var open_commands = () => {
+    console.log("button clicked")
+    setCommandListAppearState($(".commands").hasClass("show"))
+    update_list()
+  }
+  var update_list = (appear) => {
+    if ($(".shell-input").val().trim() == "") {
+      if (appear) setCommandListAppearState(true);
+      displayCommands(commands)
+    } else {
+      if (appear) setCommandListAppearState(false);
+      var c = commands.filter(command => command.title.indexOf($(".shell-input").val().trim()) > -1).sort((a, b) =>
+        a.title.indexOf($(".shell-input").val().trim()) - b.title.indexOf($(".shell-input").val().trim()))
+      displayCommands(c)
     }
-  });
+  }
+  function hide(full_hide) {
+    if (full_hide) {
+      $(".shell").css({ "margin-bottom": -100 })
+
+      console.log("full hide");
+    }
+
+    if ($(".shell_launcher_icon").html().trim() == "trip_origin") return;
+    $(".commands").removeClass("show");
+    $(".shell-background").fadeOut(300);
+    if ($(".shell_launcher_icon").html().trim() == "arrow_back") $(".shell_launcher_icon").html("trip_origin");
+  }
+  function setCommandListAppearState(state) {
+    console.log("setCommandListAppearState(" + String(state) + ")")
+    if (state) { //$(".commands").hasClass("show")
+      if (!$(".commands").hasClass("show")) return;
+      console.log("closing commands")
+      setTimeout(() => {
+        hide()
+      }, 1);
+
+    } else {
+      if ($(".commands").hasClass("show")) return;
+      console.log("opening commands")
+      setTimeout(() => {
+        $(".commands").addClass("show");
+        $(".shell-background").fadeIn(300);
+        $(".shell_launcher_icon").html("arrow_back")
+      }, 1);
+    }
+  }
+
+  const template = `
+    <button class="menu-div-row__item">
+      <i class="material-icons" style="font-size: 30px;">{{icon}}</i><br>
+      {{title}}
+    </button>
+  `;
+
+  function displayCommands(commands) {
+    var resultHtml = ""
+    for (var index in commands) {
+      var command = commands[index];
+      resultHtml += template.replace("{{title}}",command.title).replace("{{icon}}",command.icon)
+    }
+    $("#command_list").html(resultHtml)
+  }
+
+  (() => {
+    $(".shell-background").mousedown(() => {
+      // hide()
+      console.log("hiding...")
+      setCommandListAppearState(true)
+    });
+    $("#open_commands_btn").click(() => {
+      open_commands()
+    });
+    $(".shell-input").on("input", e => {
+      console.log($(".shell-input").val())
+      update_list(true)
+    })
+  })();
 }
