@@ -768,6 +768,7 @@ body {
   left:0;
   right:0;
   z-index: 80;
+  transition: all 0.3s;
 
   /* backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px); */

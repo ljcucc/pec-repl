@@ -609,7 +609,8 @@ function ShellUI() {
 
     if ($(".shell_launcher_icon").html().trim() == "trip_origin") return;
     $(".commands").removeClass("show");
-    $(".shell-background").fadeOut(300);
+    // $(".shell-background").fadeOut(300);
+    backgroundAppear(false);
     if ($(".shell_launcher_icon").html().trim() == "arrow_back") $(".shell_launcher_icon").html("trip_origin");
   }
   function setCommandListAppearState(state) {
@@ -626,7 +627,8 @@ function ShellUI() {
       console.log("opening commands")
       setTimeout(() => {
         $(".commands").addClass("show");
-        $(".shell-background").fadeIn(300);
+        // $(".shell-background").fadeIn(300);
+        backgroundAppear(true);
         $(".shell_launcher_icon").html("arrow_back")
       }, 1);
     }
@@ -646,6 +648,32 @@ function ShellUI() {
       resultHtml += template.replace("{{title}}",command.title).replace("{{icon}}",command.icon)
     }
     $("#command_list").html(resultHtml)
+  }
+
+  function backgroundAppear(state){
+    const shellBackground = $(".shell-background")
+    if(state){
+      shellBackground.css({
+        display: "",
+        opacity: 0
+      });
+      setTimeout(()=>{
+        shellBackground.css({
+          opacity: 1
+        })
+      },10);
+      
+    }else{
+      shellBackground.css({
+        display: "",
+        opacity: 0
+      });
+      setTimeout(()=>{
+        shellBackground.css({
+          display:"none"
+        })
+      },300);
+    }
   }
 
   (() => {
