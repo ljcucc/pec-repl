@@ -563,26 +563,27 @@ function ShellUI() {
     }
   }
 
-  const commands = [
-    {
-      title: "select rect",
-      icon: "crop_free",
-      command: "(rect $x $y $width $height)",
-      parameter: ["$x", "$y", "$width", "$height"]
-    },
-    {
-      title: "select circle",
-      icon: "crop_free",
-      command: "(rect $x $y $width $height)",
-      parameter: ["$x", "$y", "$width", "$height"]
-    },
-    {
-      title: "select with draw",
-      icon: "crop_free",
-      command: "(rect $x $y $width $height)",
-      parameter: ["$x", "$y", "$width", "$height"]
-    }
-  ];
+  // const commands = [
+  //   {
+  //     title: "select rect",
+  //     icon: "crop_free",
+  //     command: "(rect $x $y $width $height)",
+  //     parameter: ["$x", "$y", "$width", "$height"]
+  //   },
+  //   {
+  //     title: "select circle",
+  //     icon: "crop_free",
+  //     command: "(rect $x $y $width $height)",
+  //     parameter: ["$x", "$y", "$width", "$height"]
+  //   },
+  //   {
+  //     title: "select with draw",
+  //     icon: "crop_free",
+  //     command: "(rect $x $y $width $height)",
+  //     parameter: ["$x", "$y", "$width", "$height"]
+  //   }
+  // ];
+  var commands = window.getCommandList()
 
   var open_commands = () => {
     console.log("button clicked")
@@ -595,8 +596,8 @@ function ShellUI() {
       displayCommands(commands)
     } else {
       if (appear) setCommandListAppearState(false);
-      var c = commands.filter(command => command.title.indexOf($(".shell-input").val().trim()) > -1).sort((a, b) =>
-        a.title.indexOf($(".shell-input").val().trim()) - b.title.indexOf($(".shell-input").val().trim()))
+      var c = commands.filter(command => command.title.toUpperCase().indexOf($(".shell-input").val().trim().toUpperCase()) > -1).sort((a, b) =>
+        b.title.indexOf($(".shell-input").val().trim().toUpperCase()) - a.title.indexOf($(".shell-input").val().trim().toUpperCase()))
       displayCommands(c)
     }
   }
