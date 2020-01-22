@@ -183,7 +183,7 @@ function setupMenu(){
     }] : [])
   ])
   if(isMac) Menu.setApplicationMenu(menu)
-  else Menu.setApplicationMenu(null)
+  else Menu.setApplicationMenu(menu)
 }
 
 function createWindow () {
