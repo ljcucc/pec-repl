@@ -622,7 +622,7 @@ function ShellUI() {
       setTimeout(() => {
         hide()
       }, 1);
-
+      $(".shell-input").val("");
     } else {
       if ($(".commands").hasClass("show")) return;
       console.log("opening commands")
@@ -691,4 +691,10 @@ function ShellUI() {
       update_list(true)
     })
   })();
+}
+
+function ActionStack(){
+  var vueCom = new Vue({
+    el: ".action-stack-container"
+  })
 }

@@ -1,7 +1,8 @@
 (function () {
   var commonLib = {
-    debug: (e) => {
-      console.log("DEBUG: " + e);
+    debug: (code, context) => {
+      var e = context.interpret(code);
+      console.log("DEBUG: " + String(typeof e[0] == "object" ? JSON.stringify(e[0]) : e[0]));
     },
     msgbox: (code, context) => {
       var e = context.interpret(code);
@@ -137,31 +138,68 @@
     rect: (code, context) => {
       var e = context.interpret(code);
       e = replaceArray(e);
+      
+      return {
+        type: "shape",
+        shape: "rect",
+        x: e[0],
+        y: e[1],
+        w: e[2],
+        h: e[3]
+      }
 
-      this.canvas.getGraphicsProcess().canvas.rect(e[0], e[1], e[2], e[3])
+      // this.canvas.getGraphicsProcess().canvas.rect(e[0], e[1], e[2], e[3])
+    },
+
+    draw: (code, context) =>{
+      var e = context.interpret(code);
+      e = replaceArray(e);
+
+      for(var index in e){
+        var curr = e[index];
+        if(curr.type != "shape") continue;
+        switch(curr.shape){
+          case "rect":
+            this.canvas.getGraphicsProcess().canvas.rect(curr.x, curr.y, curr.w, curr.h);
+            break;
+        }
+      }
     },
 
     circle: (code, context) => {
       var e = context.interpret(code);
       e = replaceArray(e);
 
-      this.canvas.getGraphicsProcess().canvas.rect(e[0], e[1], e[2], e[3])
-    }
+      // this.canvas.getGraphicsProcess().canvas.rect(e[0], e[1], e[2], e[3])
+    },
+    
   };
 
   var icons = {
     circle: "panorama_fish_eye",
-    rect: "crop_landscape"
+    rect: "crop_landscape",
+    "+":"format_list_numbered",
+    "-":"format_list_numbered",
+    "*":"format_list_numbered",
+    "/":"format_list_numbered",
+    "join":"subject",
+    "true":"toggle_on",
+    "false":"toggle_off"
   };
 
   var titles ={
-    "+": "Add",
-    "-": "Subtract",
+    "+": "Addition",
+    "-": "Subtraction",
+    "*": "Multiplication",
+    "/": "Division",
     "==": "Equals",
     rect: "Draw a rect",
     circle: "Draw a circle",
     if: "if...",
-    msgbox:"MessageBox"
+    msgbox:"MessageBox",
+    join:"Join strings",
+    true: "True: Boolean",
+    false: "False: Boolean"
   }
 
   window.commonLib = commonLib;
@@ -170,7 +208,7 @@
     return e[0] instanceof Array && e[0].length == 1 ? e[0] : e;
   }
 
-  function MergeLibrary(e) {
+  function MergeLibrary(spacename, e) {
 
   }
 
@@ -178,7 +216,7 @@
     var commandList = [];
     for(var key in commonLib){
       commandList.push({
-        title:titles[key] || key,
+        title:titles[key] || "code: "+key,
         icon: icons[key] || "code",
         code: "null"
       });
