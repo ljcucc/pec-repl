@@ -1,9 +1,11 @@
 # Power Editing
-Power editing is an programmable graphics editor and program environment. 
+Power editing is an programmable graphics terminal. 
 
-also is an imitation version of Ronin editor, which is an editor that allows you to use edit photo by writing some codes.
+**Project is in development**
 
-* Download it from: https://ljcucc.itch.io/power-editing
+*also is an imitation version of Ronin editor, which is an editor that allows you to use edit photo by writing some codes.*
+
+* <s>Download it from: https://ljcucc.itch.io/power-editing</s>
 * Online demo on :https://ljcucc.github.io/power-editing
 
 ## Feature
@@ -11,7 +13,7 @@ also is an imitation version of Ronin editor, which is an editor that allows you
 * Resizable code editor
 * simple free data-type syntax
 * using your codes as a plugins
-* dragging view supported
+* <s>dragging view supported</s> (removed)
 * (and more features are developing!)
 
 ## Get Started 
@@ -37,9 +39,13 @@ External Functions:
 * `(date string)` String log with date
 * `(date)` Get date string
 
-Basic I/O
+Shapes:
+* `rect` Select a rect shape
+* `draw` Fill the shape by color
+
+<!-- Basic I/O
 * `(msgbox string)`
-* `(write string)`
+* `(write string)` -->
 
 
 ## contribution
