@@ -1,0 +1,59 @@
+body{
+  padding:0;
+  margin:0;
+  background:#212121;
+}
+
+.shell{
+  width:100%;
+  ackground:rgba(0,0,0,0);
+  color:white;
+  font-family: monospace;
+  font-size: 14px;
+  overflow-x: hidden; 
+}
+
+.shell-input-container{
+  width:100%;
+  position: sticky;
+  bottom: 0;
+
+  background:rgba(0,0,0,0);
+  color:white;
+
+  font-family: monospace;
+  font-size: 12px;
+
+  outline:none;
+  border: 1px solid rgba(255,255,255,0.35);
+  box-sizing: border-box;
+
+  display:flex;
+  //justify-content: center;
+  align-items: center;
+
+  overflow-x: hidden;
+}
+
+.shell-input-container>*{
+  display:inline-block;
+}
+
+.shell-input-container i{
+  font-size: 16px;
+}
+
+.shell-input{
+  padding: 6px;
+  outline: none;
+  background:rgba(0,0,0,0);
+  color:white;
+  border:none;
+
+  flex: 1;
+
+  padding: 6px;
+
+  font-family: monospace;
+  font-size: 12px;
+}
