@@ -9,7 +9,7 @@ body{
   ackground:rgba(0,0,0,0);
   color:white;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 12px;
   overflow-x: hidden; 
 }
 
@@ -56,4 +56,15 @@ body{
 
   font-family: monospace;
   font-size: 12px;
+}
+
+.shell-input:focus ~ .material-icons{
+  display:none;
+  color:red;
+}
+
+.result{
+  padding: 8px 4px;
+  padding-left: 16px;
+  border-bottom: 1px solid rgba(255,255,255, 0.35);
 }
