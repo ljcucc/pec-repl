@@ -1,0 +1,12 @@
+{
+  "clear":{
+    "type":"template",
+    "code": "window.shell.clear()",
+    "syntax":""
+  },
+  "print":{
+    "type":"template",
+    "code":"window.shell.print({{0}})",
+    "syntax":"$msg"
+  }
+}
