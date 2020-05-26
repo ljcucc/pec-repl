@@ -12,16 +12,16 @@ var onload = (()=>{
     if(commandString.trim() == "") return;
     ShellInput.value = "";
 
-    runCommand(commandString);
+    runCommand(`(${commandString})`);
   });
 
   function runCommand(command){
     shellContent.innerHTML += `<div class="result"> > ${command} <br> </div>`
     window.scrollTo(0, shellContent.offsetHeight); //ajuest psotion of scrolling
 
-    var parsed = parenthesize(tokenize(command));
-    var compiled_code = run_lisp(parsed);
     try{
+      var parsed = parenthesize(tokenize(command));
+      var compiled_code = run_lisp(parsed);
       eval(compiled_code);
     }catch(e){
       shellContent.innerHTML += `<div class="result error"> ${e.name} </div>`
